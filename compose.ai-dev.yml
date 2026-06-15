@@ -1,0 +1,45 @@
+services:
+  ai_dev:
+    build:
+      context: ./.devcontainer/ai_dev
+      dockerfile: Dockerfile
+      args:
+        USER_UID: 1000
+        USER_GID: 1000
+
+    user: "1000:1000"
+    working_dir: /workspace
+
+    command: sleep infinity
+    init: true
+
+    # The image's entire root filesystem is read-only.
+    read_only: true
+
+    # Do not allow privilege escalation.
+    privileged: false
+
+    cap_drop:
+      - ALL
+
+    security_opt:
+      - no-new-privileges:true
+
+    environment:
+      HOME: /home/vscode
+      TMPDIR: /tmp
+
+    volumes:
+      # The only host directory the container can modify.
+      - type: bind
+        source: .
+        target: /workspace
+        read_only: false
+        bind:
+          create_host_path: false
+
+    # Runtime-only writable areas. These disappear when the container stops.
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=1g,mode=1777
+      - /home/vscode/.vscode-server:rw,nosuid,nodev,size=2g,uid=1000,gid=1000,mode=0700
+      - /home/vscode/.cache:rw,nosuid,nodev,size=512m,uid=1000,gid=1000,mode=0700

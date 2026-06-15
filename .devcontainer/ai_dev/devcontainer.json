@@ -1,0 +1,29 @@
+{
+  "name": "AI Development",
+  "dockerComposeFile": [
+    // you would put the real project compose file here to spin everything up
+    // your project + the ai-dev container 
+    // "../../compose.yml",
+    "../../compose.ai-dev.yml"
+  ],
+  "service": "ai_dev",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "vscode",
+
+  // Avoid Dev Containers attempting to rewrite UID information at startup.
+  "updateRemoteUserUID": false,
+  "overrideCommand": false,
+  // Keep the Compose stack running when the VS Code window closes.
+  "shutdownAction": "none",
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "saoudrizwan.claude-dev"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  }
+}
