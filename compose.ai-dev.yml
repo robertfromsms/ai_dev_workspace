@@ -1,7 +1,7 @@
 services:
   ai_dev:
     build:
-      context: ./.devcontainer/ai_dev
+      context: ./.devcontainer
       dockerfile: Dockerfile
       args:
         USER_UID: 1000
@@ -30,7 +30,7 @@ services:
       TMPDIR: /tmp
 
     volumes:
-      # The only host directory the container can modify.
+      # The container can modify the project folder
       - type: bind
         source: .
         target: /workspace
@@ -38,8 +38,14 @@ services:
         bind:
           create_host_path: false
 
+      # The container can modify everything under /home/vscode
+      - type: volume
+        source: ai_dev_home
+        target: /home/vscode
+
     # Runtime-only writable areas. These disappear when the container stops.
     tmpfs:
       - /tmp:rw,nosuid,nodev,noexec,size=1g,mode=1777
-      - /home/vscode/.vscode-server:rw,nosuid,nodev,size=2g,uid=1000,gid=1000,mode=0700
-      - /home/vscode/.cache:rw,nosuid,nodev,size=512m,uid=1000,gid=1000,mode=0700
+
+volumes:
+  ai_dev_home:

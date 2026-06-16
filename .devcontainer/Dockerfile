@@ -33,6 +33,9 @@ RUN apt-get update \
         /workspace \
         /home/${USERNAME}
 
+# mark /workspace as safe, so version control will work inside devcontainer
+RUN git config --system --add safe.directory /workspace
+
 USER vscode
 
 ENV HOME=/home/vscode

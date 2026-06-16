@@ -1,6 +1,9 @@
 {
-  "name": "AI Development (Cold)",
+  "name": "AI Development (Hot)",
   "dockerComposeFile": [
+    // you would put the real project compose file here to spin everything up
+    // your project + the ai-dev container 
+    // "../../compose.yml",
     "../../compose.ai-dev.yml"
   ],
   "service": "ai_dev",
