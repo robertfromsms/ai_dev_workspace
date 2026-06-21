@@ -1,0 +1,31 @@
+services:
+  ai_dev_common:
+    # this is a random number i picked between 1000 - 60000
+    user: "43927:43927"
+    working_dir: /workspace
+     # will override any entrypoint to nothing
+    entrypoint: []
+    # just sleep
+    command: ["sleep", "infinity"]
+
+    init: true
+    # The image's entire root filesystem is read-only.
+    read_only: true
+    # Do not allow privilege escalation.
+    privileged: false
+
+    # drop all root-only capabilities
+    cap_drop:
+      - ALL
+
+    # can't gain new privileges
+    security_opt:
+      - no-new-privileges:true
+
+    environment:
+      HOME: /home/agent
+      TMPDIR: /tmp
+
+    # Runtime-only writable areas. These disappear when the container stops.
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=1g,mode=1777

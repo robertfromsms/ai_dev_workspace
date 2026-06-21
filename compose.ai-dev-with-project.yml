@@ -1,0 +1,33 @@
+name: ai_dev
+
+include:
+  - compose.ai-dev-project-bridge.yml
+
+services:
+  ai_dev_with_project:
+    extends:
+      file: compose.ai-dev-common.yml
+      service: ai_dev_common
+    build:
+      context: ./.devcontainer
+      dockerfile: Dockerfile.ai-dev
+      args:
+        BASE_IMAGE: "ai_dev-${PROJECT_PRIMARY_SERVICE:?Set PROJECT_PRIMARY_SERVICE in .env}:latest"
+        USERNAME: agent
+        USER_UID: 43927
+        USER_GID: 43927
+
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace
+        read_only: false
+        bind:
+          create_host_path: false
+
+      - type: volume
+        source: ai_dev_with_project_home
+        target: /home/agent
+
+volumes:
+  ai_dev_with_project_home:

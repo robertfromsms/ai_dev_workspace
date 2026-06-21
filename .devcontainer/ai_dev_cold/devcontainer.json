@@ -1,0 +1,37 @@
+{
+  "name": "AI Development (Cold)",
+  "initializeCommand": [
+    "docker",
+    "compose",
+    "-f",
+    "${localWorkspaceFolder}/compose.ai-dev-cold.yml",
+    "build",
+    "ai_dev_cold_base"
+  ],
+  "dockerComposeFile": [
+    "../../compose.ai-dev-cold.yml"
+  ],
+  "service": "ai_dev_cold",
+  "runServices": [
+    "ai_dev_cold"
+  ],
+  "workspaceFolder": "/workspace",
+  "remoteUser": "agent",
+
+  // Avoid Dev Containers attempting to rewrite UID information at startup.
+  "updateRemoteUserUID": false,
+  "overrideCommand": false,
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "saoudrizwan.claude-dev",
+        "openai.chatgpt"
+      ],
+      "settings": {
+        // "chat.disableAIFeatures": true, // if you want to disable copilot
+        "terminal.integrated.defaultProfile.linux": "bash"        
+      }
+    }
+  }
+}
