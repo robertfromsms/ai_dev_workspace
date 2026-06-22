@@ -18,16 +18,10 @@ services:
         USER_GID: 43927
 
     volumes:
-      - type: bind
-        source: .
-        target: /workspace
-        read_only: false
-        bind:
-          create_host_path: false
-
       - type: volume
         source: ai_dev_with_project_home
         target: /home/agent
+        read_only: false
 
 volumes:
   ai_dev_with_project_home:

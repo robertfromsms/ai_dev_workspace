@@ -59,6 +59,10 @@ validate_with_project_envs() {
         get_clean_env_value PROJECT_PRIMARY_SERVICE
     )"
 
+    git_path="$(
+        get_clean_env_value GIT_PATH
+    )"
+
     if [[ -z "$project_compose_files" ]]; then
         cat >&2 <<'EOF'
 ERROR: PROJECT_COMPOSE_FILES must be defined in the project-root .env.
@@ -84,6 +88,22 @@ PROJECT_PRIMARY_SERVICE=app
 EOF
         exit 1
     fi
+
+    case "$git_path" in
+        ./.git | ./.fake_git)
+            ;;
+        *)
+        cat >&2 <<'EOF'
+ERROR: GIT_PATH must be defined in the project-root .env and must have one of these values:
+
+GIT_PATH=./.git
+GIT_PATH=./.fake_git
+
+Use ./.fake_git if the project does not use Git.
+EOF
+            exit 1
+            ;;
+    esac
 
     IFS=',' read -r -a compose_files <<< "$project_compose_files"
 

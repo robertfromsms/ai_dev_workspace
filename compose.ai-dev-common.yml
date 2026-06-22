@@ -29,3 +29,80 @@ services:
     # Runtime-only writable areas. These disappear when the container stops.
     tmpfs:
       - /tmp:rw,nosuid,nodev,size=1g,mode=1777
+
+    volumes:
+      # The container can modify the project folder
+      - type: bind
+        source: .
+        target: /workspace
+        read_only: false
+        bind:
+          create_host_path: false
+
+      # Protected AI development directories
+      - type: bind
+        source: ./.devcontainer
+        target: /workspace/.devcontainer
+        read_only: true
+        bind:
+          create_host_path: false
+
+      - type: bind
+        source: ./ai_dev_scripts
+        target: /workspace/ai_dev_scripts
+        read_only: true
+        bind:
+          create_host_path: false
+
+      # This is specifically for git, GIT_PATH can only be ./.git or ./.fake_git
+      # validate-with-project-envs.sh checks that, if you don't use git, then put ./.fake_git
+      # if you use git, then put ./.git
+      - type: bind
+        source: ${GIT_PATH:?Set GIT_PATH in .env. ./.git if the project use git; ./.fake_git if it doesn't}
+        target: /workspace/.git
+        read_only: true
+        bind:
+          create_host_path: false
+
+      # Protected AI development files
+      - type: bind
+        source: ./compose.ai-dev-cold.yml
+        target: /workspace/compose.ai-dev-cold.yml
+        read_only: true
+        bind:
+          create_host_path: false
+
+      - type: bind
+        source: ./compose.ai-dev-common.yml
+        target: /workspace/compose.ai-dev-common.yml
+        read_only: true
+        bind:
+          create_host_path: false
+
+      - type: bind
+        source: ./compose.ai-dev-project-bridge.yml
+        target: /workspace/compose.ai-dev-project-bridge.yml
+        read_only: true
+        bind:
+          create_host_path: false
+
+      - type: bind
+        source: ./compose.ai-dev-with-project.yml
+        target: /workspace/compose.ai-dev-with-project.yml
+        read_only: true
+        bind:
+          create_host_path: false
+
+      - type: bind
+        source: ./.gitignore
+        target: /workspace/.gitignore
+        read_only: true
+        bind:
+          create_host_path: false
+
+      - type: bind
+        source: ./vs_code_ai_dev_workspace.code-workspace
+        target: /workspace/vs_code_ai_dev_workspace.code-workspace
+        read_only: true
+        bind:
+          create_host_path: false
