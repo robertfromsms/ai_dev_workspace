@@ -1,5 +1,6 @@
 get_env_value() {
-    local key="$1"
+    local -r key="$1"
+    local -r env_file="$2"
 
     awk -v key="$key" '
         $0 ~ "^[[:space:]]*" key "[[:space:]]*=" {
@@ -35,10 +36,11 @@ trim() {
 }
 
 get_clean_env_value() {
-    local key="$1"
+    local -r key="$1"
+    local -r env_file="$2"
     local value
 
-    value="$(get_env_value "$key")"
+    value="$(get_env_value "$key" "$env_file")"
     value="$(trim "$value")"
     value="$(strip_outer_quotes "$value")"
     value="$(trim "$value")"
@@ -47,20 +49,28 @@ get_clean_env_value() {
 }
 
 validate_with_project_envs() {
+    local -r env_file="$1"
+    local -r project_root="$2"
+    local -n validated_files="$3"
+    local -n project_primary_service="$4"
+
+    # reset validated_files
+    validated_files=()
+
     if [[ ! -f "$env_file" ]]; then
         fail "Required project .env file was not found: ${env_file}"
     fi
 
-    project_compose_files="$(
-        get_clean_env_value PROJECT_COMPOSE_FILES
+    local -r project_compose_files="$(
+        get_clean_env_value PROJECT_COMPOSE_FILES "$env_file"
     )"
 
     project_primary_service="$(
-        get_clean_env_value PROJECT_PRIMARY_SERVICE
+        get_clean_env_value PROJECT_PRIMARY_SERVICE "$env_file"
     )"
 
-    git_path="$(
-        get_clean_env_value GIT_PATH
+    local -r git_path="$(
+        get_clean_env_value GIT_PATH "$env_file"
     )"
 
     if [[ -z "$project_compose_files" ]]; then
@@ -105,9 +115,9 @@ EOF
             ;;
     esac
 
-    IFS=',' read -r -a compose_files <<< "$project_compose_files"
+    local -a compose_files=()
 
-    validated_files=()
+    IFS=',' read -r -a compose_files <<< "$project_compose_files"
 
     local compose_file
 

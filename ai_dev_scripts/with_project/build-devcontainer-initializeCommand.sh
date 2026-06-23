@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 build_devcontainer_initialize_command() {
+    local -r project_primary_service="$1"
+
     if [[ -z "${project_primary_service:-}" ]]; then
         fail "project_primary_service has not been initialized."
     fi

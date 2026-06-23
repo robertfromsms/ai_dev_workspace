@@ -1,4 +1,7 @@
 prepare_project_bridge() {
+    local -r bridge_file="$1"
+    local -r validated_files_variable_name="$2"
+    local -r project_primary_service="$3"
 
     if ! declare -p bridge_file >/dev/null 2>&1; then
         fail "bridge_file has not been initialized."
@@ -8,13 +11,19 @@ prepare_project_bridge() {
         fail "Project bridge file does not exist: ${bridge_file}"
     fi
 
-    if ! declare -p validated_files >/dev/null 2>&1; then
-        fail "validated_files has not been initialized."
+    local declaration
+
+    if ! declaration="$(
+        declare -p "$validated_files_variable_name" 2>/dev/null
+    )"; then
+        fail "$validated_files_variable_name has not been declared."
     fi
 
-    if [[ "$(declare -p validated_files)" != "declare -a"* ]]; then
-        fail "validated_files exists, but it is not an indexed Bash array."
+    if [[ ! "$declaration" =~ ^declare\ -[^[:space:]]*a ]]; then
+        fail "$validated_files_variable_name is not an indexed Bash array."
     fi
+
+    local -n validated_files="$validated_files_variable_name"
 
     if [[ "${#validated_files[@]}" -eq 0 ]]; then
         fail "validated_files does not contain any Compose file paths."
