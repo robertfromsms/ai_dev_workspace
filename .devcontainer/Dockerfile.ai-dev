@@ -27,8 +27,6 @@ RUN groupadd --gid "${USER_GID}" "${USERNAME}" \
 # mark /workspace as safe, so version control will work inside devcontainer
 RUN git config --system --add safe.directory /workspace
 
-# probably need to do some sort of thing here to add git wrapper to system to disable some git commands
-
 USER ${USERNAME}
 
 ENV HOME=/home/${USERNAME}

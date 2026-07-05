@@ -54,15 +54,12 @@ services:
         bind:
           create_host_path: false
 
-      # This is specifically for git, GIT_PATH can only be ./.git or ./.fake_git
-      # validate-with-project-envs.sh checks that, if you don't use git, then put ./.fake_git
-      # if you use git, then put ./.git
       - type: bind
-        source: ${GIT_PATH:?Set GIT_PATH in .env. ./.git if the project use git; ./.fake_git if it doesn't}
+        source: .git
         target: /workspace/.git
         read_only: true
         bind:
-          create_host_path: false
+          create_host_path: true
 
       # Protected AI development files
       - type: bind
@@ -96,6 +93,13 @@ services:
       - type: bind
         source: ./.gitignore
         target: /workspace/.gitignore
+        read_only: true
+        bind:
+          create_host_path: false
+
+      - type: bind
+        source: ./.dockerignore
+        target: /workspace/.dockerignore
         read_only: true
         bind:
           create_host_path: false
