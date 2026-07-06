@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 
+# BASE_IMAGE must be Debian/Ubuntu images
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 
@@ -23,6 +24,12 @@ RUN groupadd --gid "${USER_GID}" "${USERNAME}" \
     && chown -R "${USER_UID}:${USER_GID}" \
         /workspace \
         /home/${USERNAME}
+
+# make sure git is installed
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        git \
+    && rm -rf /var/lib/apt/lists/*
 
 # mark /workspace as safe, so version control will work inside devcontainer
 RUN git config --system --add safe.directory /workspace
