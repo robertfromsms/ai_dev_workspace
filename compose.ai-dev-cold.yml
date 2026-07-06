@@ -1,4 +1,4 @@
-name: ai_dev
+name: ai_dev_${UNIQUE_PROJECT_NAME:?Set UNIQUE_PROJECT_NAME in .env, must be lowercase and no spaces}
 
 services:
   ai_dev_cold_base:
@@ -21,7 +21,7 @@ services:
       context: ./.devcontainer
       dockerfile: Dockerfile.ai-dev
       args:
-        BASE_IMAGE: ai_dev-ai_dev_cold_base:latest
+        BASE_IMAGE: ai_dev_${UNIQUE_PROJECT_NAME:?Error}-ai_dev_cold_base:latest
         USERNAME: agent
         USER_UID: 43927
         USER_GID: 43927
