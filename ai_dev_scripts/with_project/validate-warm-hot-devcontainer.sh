@@ -42,8 +42,9 @@ validate_warm_hot_devcontainer() {
             "$actual_command" >&2
 
         printf '\nThe expected and actual initializeCommand values are not synchronized.\n' >&2
-        printf 'From the project root, run:\n\n' >&2
-        printf 'docker compose -f compose.ai-dev-cold.yml run --rm --build --no-deps ai_dev_cold_base /workspace/ai_dev_scripts/initialize-ai-dev-with-project.sh\n\n' >&2
+        printf 'From the project root, run the following command in a single line:\n\n' >&2
+        printf 'docker compose -f compose.ai-dev-cold.yml run --rm --build --no-deps \n' >&2
+        printf 'ai_dev_cold_base /workspace/ai_dev_scripts/initialize-ai-dev-with-project.sh\n\n' >&2
 
         return 1
     fi
