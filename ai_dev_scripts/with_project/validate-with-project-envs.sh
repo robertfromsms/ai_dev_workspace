@@ -48,6 +48,54 @@ get_clean_env_value() {
     printf '%s' "$value"
 }
 
+# this is used for both with-project and with the cold environment
+validate_unique_project_name() {
+    local -r env_file="$1"
+
+    if [[ ! -f "$env_file" ]]; then
+        fail "Required project .env file was not found: ${env_file}"
+    fi
+
+    local -r unique_project_name="$(
+        get_clean_env_value UNIQUE_PROJECT_NAME "$env_file"
+    )"
+
+    if [[ -z "$unique_project_name" ]]; then
+        cat >&2 <<'EOF'
+ERROR: UNIQUE_PROJECT_NAME must be defined in the project-root .env.
+
+Example:
+
+UNIQUE_PROJECT_NAME=stars_sweeper
+EOF
+        exit 1
+    fi
+
+    if [[ ! "$unique_project_name" =~ ^[a-z0-9][a-z0-9_-]*$ ]]; then
+        cat >&2 <<'EOF'
+ERROR: UNIQUE_PROJECT_NAME has an invalid Docker Compose project name format.
+
+Found:
+
+UNIQUE_PROJECT_NAME=${unique_project_name}
+
+Docker Compose project names must:
+- use only lowercase letters, digits, dashes, and underscores
+- start with a lowercase letter or digit
+
+Examples:
+
+UNIQUE_PROJECT_NAME=stars_sweeper
+UNIQUE_PROJECT_NAME=stars-sweeper
+UNIQUE_PROJECT_NAME=stars123
+EOF
+        exit 1
+    fi
+
+    printf 'Validated project name: %s\n' \
+        "$unique_project_name"
+}
+
 validate_with_project_envs() {
     local -r env_file="$1"
     local -r project_root="$2"

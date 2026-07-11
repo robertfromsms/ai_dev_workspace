@@ -13,6 +13,7 @@
     "ai_dev_scripts_common_with_project": "ai_dev_scripts/common-with-project.sh",
     "ai_dev_scripts_initialize_ai_dev_with_project": "ai_dev_scripts/initialize-ai-dev-with-project.sh",
     "ai_dev_scripts_run_validate_with_project": "ai_dev_scripts/run-validate-with-project.sh",
+    "ai_dev_scripts_run_validate_unique_project_name": "ai_dev_scripts/run-validate-unique-project-name.sh",
     "ai_dev_scripts_build_devcontainer_initialize_command": "ai_dev_scripts/with_project/build-devcontainer-initializeCommand.sh",
     "ai_dev_scripts_prepare_project_bridge": "ai_dev_scripts/with_project/prepare-project-bridge.sh",
     "ai_dev_scripts_prepare_warm_hot_devcontainer":"ai_dev_scripts/with_project/prepare-warm-hot-devcontainer.sh",

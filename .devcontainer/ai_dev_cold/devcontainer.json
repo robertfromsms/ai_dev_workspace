@@ -1,6 +1,6 @@
 {
   "name": "AI Development (Cold)",
-  "initializeCommand": "docker compose -f ${localWorkspaceFolder}/compose.ai-dev-cold.yml build ai_dev_cold_base",
+  "initializeCommand": "docker compose -f ${localWorkspaceFolder}/compose.ai-dev-cold.yml run --rm --build --no-deps ai_dev_cold_base /workspace/ai_dev_scripts/run-validate-unique-project-name.sh && docker compose -f ${localWorkspaceFolder}/compose.ai-dev-cold.yml build ai_dev_cold_base",
   "dockerComposeFile": [
     "../../compose.ai-dev-cold.yml"
   ],

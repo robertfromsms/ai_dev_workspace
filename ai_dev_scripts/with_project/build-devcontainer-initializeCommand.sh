@@ -13,5 +13,5 @@ build_devcontainer_initialize_command() {
     fi
 
     printf '%s' \
-        'docker compose -f ${localWorkspaceFolder}/compose.ai-dev-cold.yml run --rm --build --no-deps ai_dev_cold_base /workspace/ai_dev_scripts/run-validate-with-project.sh && docker compose -f ${localWorkspaceFolder}/compose.ai-dev-with-project.yml build '"${project_primary_service}"
+        'docker compose -f ${localWorkspaceFolder}/compose.ai-dev-cold.yml run --rm --build --no-deps ai_dev_cold_base /workspace/ai_dev_scripts/run-validate-unique-project-name.sh && docker compose -f ${localWorkspaceFolder}/compose.ai-dev-cold.yml run --rm --build --no-deps ai_dev_cold_base /workspace/ai_dev_scripts/run-validate-with-project.sh && docker compose -f ${localWorkspaceFolder}/compose.ai-dev-with-project.yml build '"${project_primary_service}"
 }
