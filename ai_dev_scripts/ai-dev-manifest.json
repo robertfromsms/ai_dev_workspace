@@ -4,7 +4,6 @@
   "paths": {
     "ai_dev_cold_devcontainer": ".devcontainer/ai_dev_cold/devcontainer.json",
     "ai_dev_cold_dockerfile": ".devcontainer/ai_dev_cold/Dockerfile.cold_base",
-    "ai_dev_hot_devcontainer": ".devcontainer/ai_dev_hot/devcontainer.json",
     "ai_dev_warm_devcontainer": ".devcontainer/ai_dev_warm/devcontainer.json",
     "gitignore": ".gitignore",
     "dockerignore": ".dockerignore",
