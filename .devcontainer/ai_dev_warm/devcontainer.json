@@ -12,6 +12,7 @@
   "remoteUser": "agent",
   "updateRemoteUserUID": false,
   "overrideCommand": false,
+  "userEnvProbe": "none",
   "customizations": {
     "vscode": {
       "extensions": [
