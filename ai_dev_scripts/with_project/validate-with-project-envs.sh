@@ -100,7 +100,7 @@ validate_with_project_envs() {
     local -r env_file="$1"
     local -r project_root="$2"
     local -n validated_files="$3"
-    local -n project_primary_service="$4"
+    local -n project_local_dev_service="$4"
 
     # reset validated_files
     validated_files=()
@@ -113,8 +113,8 @@ validate_with_project_envs() {
         get_clean_env_value PROJECT_COMPOSE_FILES "$env_file"
     )"
 
-    project_primary_service="$(
-        get_clean_env_value PROJECT_PRIMARY_SERVICE "$env_file"
+    project_local_dev_service="$(
+        get_clean_env_value PROJECT_LOCAL_DEV_SERVICE "$env_file"
     )"
 
     if [[ -z "$project_compose_files" ]]; then
@@ -132,13 +132,13 @@ EOF
         exit 1
     fi
 
-    if [[ -z "$project_primary_service" ]]; then
+    if [[ -z "$project_local_dev_service" ]]; then
         cat >&2 <<'EOF'
-ERROR: PROJECT_PRIMARY_SERVICE must be defined in the project-root .env.
+ERROR: PROJECT_LOCAL_DEV_SERVICE must be defined in the project-root .env.
 
 Example:
 
-PROJECT_PRIMARY_SERVICE=app
+PROJECT_LOCAL_DEV_SERVICE=app
 EOF
         exit 1
     fi
@@ -174,6 +174,6 @@ EOF
     printf 'Validated %d project Compose file(s).\n' \
         "${#validated_files[@]}"
 
-    printf 'Validated primary service: %s\n' \
-        "$project_primary_service"
+    printf 'Validated project local development service: %s\n' \
+        "$project_local_dev_service"
 }

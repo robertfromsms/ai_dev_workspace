@@ -2,7 +2,7 @@
 
 validate_warm_hot_devcontainer() {
     local -r devcontainer_file="$1"
-    local -r project_primary_service="$2"
+    local -r project_local_dev_service="$2"
 
     if [[ ! -f "$devcontainer_file" ]]; then
         fail \
@@ -25,7 +25,7 @@ validate_warm_hot_devcontainer() {
     local expected_command
     local actual_command
 
-    expected_command="$(build_devcontainer_initialize_command "$project_primary_service")"
+    expected_command="$(build_devcontainer_initialize_command "$project_local_dev_service")"
 
     actual_command="$(
         jq -r '.initializeCommand' "$devcontainer_file"

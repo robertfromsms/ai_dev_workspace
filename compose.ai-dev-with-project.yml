@@ -12,7 +12,7 @@ services:
       context: ./.devcontainer
       dockerfile: Dockerfile.ai-dev
       args:
-        BASE_IMAGE: "ai_dev_${UNIQUE_PROJECT_NAME:?Error}-${PROJECT_PRIMARY_SERVICE:?Set PROJECT_PRIMARY_SERVICE in .env}:latest"
+        BASE_IMAGE: "ai_dev_${UNIQUE_PROJECT_NAME:?Error}-${PROJECT_LOCAL_DEV_SERVICE:?Set PROJECT_LOCAL_DEV_SERVICE in .env}:latest"
         USERNAME: agent
         USER_UID: 43927
         USER_GID: 43927

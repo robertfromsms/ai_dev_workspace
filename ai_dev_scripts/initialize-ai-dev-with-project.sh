@@ -16,25 +16,25 @@ bridge_file="${project_root}/$(get_value_from_manifest '.paths.compose_ai_dev_pr
 ai_dev_warm_devcontainer="${project_root}/$(get_value_from_manifest '.paths.ai_dev_warm_devcontainer' "$manifest_file")"
 
 declare -a validated_files_to_use=()
-project_primary_service_to_use=""
+project_local_dev_service_to_use=""
 
 validate_with_project_envs \
     "$env_file" \
     "$project_root" \
     validated_files_to_use \
-    project_primary_service_to_use
+    project_local_dev_service_to_use
 
 prepare_project_bridge \
     "$bridge_file" \
     validated_files_to_use \
-    "$project_primary_service_to_use"
+    "$project_local_dev_service_to_use"
 
 prepare_warm_hot_devcontainer \
     "$ai_dev_warm_devcontainer" \
-    "$project_primary_service_to_use"
+    "$project_local_dev_service_to_use"
 
 validate_warm_hot_devcontainer \
     "$ai_dev_warm_devcontainer" \
-    "$project_primary_service_to_use"
+    "$project_local_dev_service_to_use"
 
 printf 'AI Dev project initialization completed successfully.\n'

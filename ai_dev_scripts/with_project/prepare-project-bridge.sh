@@ -1,7 +1,7 @@
 prepare_project_bridge() {
     local -r bridge_file="$1"
     local -r validated_files_variable_name="$2"
-    local -r project_primary_service="$3"
+    local -r project_local_dev_service="$3"
 
     if ! declare -p bridge_file >/dev/null 2>&1; then
         fail "bridge_file has not been initialized."
@@ -66,5 +66,5 @@ prepare_project_bridge() {
         "$bridge_content" > "$bridge_file"
 
     printf 'Updated bridge: %s\n' "$bridge_file"
-    printf 'Primary service: %s\n' "$project_primary_service"
+    printf 'Local Development service: %s\n' "$project_local_dev_service"
 }

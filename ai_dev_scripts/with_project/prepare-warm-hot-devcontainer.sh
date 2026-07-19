@@ -2,7 +2,7 @@
 
 prepare_warm_hot_devcontainer() {
     local -r devcontainer_file="$1"
-    local -r project_primary_service="$2"
+    local -r project_local_dev_service="$2"
 
     if [[ ! -f "$devcontainer_file" ]]; then
         fail "Dev Container configuration does not exist: ${devcontainer_file}"
@@ -10,7 +10,7 @@ prepare_warm_hot_devcontainer() {
 
     local initialize_command
 
-    initialize_command="$(build_devcontainer_initialize_command "$project_primary_service")"
+    initialize_command="$(build_devcontainer_initialize_command "$project_local_dev_service")"
 
     local updated_json
 
