@@ -4,7 +4,7 @@ services:
   ai_dev_cold_base:
     build:
       context: ./.devcontainer
-      dockerfile: ./ai_dev_cold/Dockerfile.cold_base
+      dockerfile: ./ai_dev_container/Dockerfile.cold_base
     working_dir: /workspace
 
     volumes:

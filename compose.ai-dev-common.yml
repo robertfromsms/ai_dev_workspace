@@ -77,20 +77,6 @@ services:
           create_host_path: false
 
       - type: bind
-        source: ./compose.ai-dev-project-bridge.yml
-        target: /workspace/compose.ai-dev-project-bridge.yml
-        read_only: true
-        bind:
-          create_host_path: false
-
-      - type: bind
-        source: ./compose.ai-dev-with-project.yml
-        target: /workspace/compose.ai-dev-with-project.yml
-        read_only: true
-        bind:
-          create_host_path: false
-
-      - type: bind
         source: ./.gitignore
         target: /workspace/.gitignore
         read_only: true
@@ -100,13 +86,6 @@ services:
       - type: bind
         source: ./.dockerignore
         target: /workspace/.dockerignore
-        read_only: true
-        bind:
-          create_host_path: false
-
-      - type: bind
-        source: ./vs_code_ai_dev_workspace.code-workspace
-        target: /workspace/vs_code_ai_dev_workspace.code-workspace
         read_only: true
         bind:
           create_host_path: false

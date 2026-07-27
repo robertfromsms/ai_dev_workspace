@@ -14,8 +14,4 @@ get_value_from_manifest() {
     jq --exit-status --raw-output "$dot_key" "$manifest_file"
 }
 
-source "${script_dir}/with_project/validate-with-project-envs.sh"
-source "${script_dir}/with_project/prepare-project-bridge.sh"
-source "${script_dir}/with_project/build-devcontainer-initializeCommand.sh"
-source "${script_dir}/with_project/prepare-warm-hot-devcontainer.sh"
-source "${script_dir}/with_project/validate-warm-hot-devcontainer.sh"
+source "${script_dir}/validate-unique-project-name.sh"

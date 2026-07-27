@@ -2,26 +2,15 @@
   "project_root": "/workspace",
   "env_file": "/workspace/.env",
   "paths": {
-    "ai_dev_cold_devcontainer": ".devcontainer/ai_dev_cold/devcontainer.json",
-    "ai_dev_cold_dockerfile": ".devcontainer/ai_dev_cold/Dockerfile.cold_base",
-    "ai_dev_warm_devcontainer": ".devcontainer/ai_dev_warm/devcontainer.json",
+    "ai_dev_cold_devcontainer": ".devcontainer/ai_dev_container/devcontainer.json",
+    "ai_dev_cold_dockerfile": ".devcontainer/ai_dev_container/Dockerfile.cold_base",
     "gitignore": ".gitignore",
     "dockerignore": ".dockerignore",
-    "vscode_extensions": ".vscode/extensions.json",
     "ai_dev_manifest": "ai_dev_scripts/ai-dev-manifest.json",
     "ai_dev_scripts_common_with_project": "ai_dev_scripts/common-with-project.sh",
-    "ai_dev_scripts_initialize_ai_dev_with_project": "ai_dev_scripts/initialize-ai-dev-with-project.sh",
-    "ai_dev_scripts_run_validate_with_project": "ai_dev_scripts/run-validate-with-project.sh",
     "ai_dev_scripts_run_validate_unique_project_name": "ai_dev_scripts/run-validate-unique-project-name.sh",
-    "ai_dev_scripts_build_devcontainer_initialize_command": "ai_dev_scripts/with_project/build-devcontainer-initializeCommand.sh",
-    "ai_dev_scripts_prepare_project_bridge": "ai_dev_scripts/with_project/prepare-project-bridge.sh",
-    "ai_dev_scripts_prepare_warm_hot_devcontainer":"ai_dev_scripts/with_project/prepare-warm-hot-devcontainer.sh",
-    "ai_dev_scripts_validate_warm_hot_devcontainer": "ai_dev_scripts/with_project/validate-warm-hot-devcontainer.sh",
-    "ai_dev_scripts_validate_with_project_envs": "ai_dev_scripts/with_project/validate-with-project-envs.sh",
+    "ai_dev_scripts_validate_unique_project_name": "ai_dev_scripts/validate-unique-project-name.sh",
     "compose_ai_dev_cold": "compose.ai-dev-cold.yml",
-    "compose_ai_dev_common": "compose.ai-dev-common.yml",
-    "compose_ai_dev_project_bridge": "compose.ai-dev-project-bridge.yml",
-    "compose_ai_dev_with_project": "compose.ai-dev-with-project.yml",
-    "vscode_workspace": "vs_code_ai_dev_workspace.code-workspace"
+    "compose_ai_dev_common": "compose.ai-dev-common.yml"
   }
 }
