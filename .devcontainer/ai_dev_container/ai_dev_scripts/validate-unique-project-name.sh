@@ -62,7 +62,7 @@ validate_unique_project_name() {
 
     if [[ -z "$unique_project_name" ]]; then
         cat >&2 <<'EOF'
-ERROR: UNIQUE_PROJECT_NAME must be defined in the project-root .env.
+ERROR: UNIQUE_PROJECT_NAME must be defined in .devcontainer/ai_dev_container/.env.
 
 Example:
 

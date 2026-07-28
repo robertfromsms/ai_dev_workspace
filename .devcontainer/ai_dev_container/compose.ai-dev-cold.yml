@@ -1,0 +1,36 @@
+name: ai_dev_${UNIQUE_PROJECT_NAME:?Set UNIQUE_PROJECT_NAME in .devcontainer/ai_dev_container/.env, must be lowercase and no spaces}
+
+services:
+  ai_dev_cold_base:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.cold_base
+    working_dir: /workspace
+
+    volumes:
+      - type: bind
+        source: ../../.
+        target: /workspace
+        read_only: false
+
+  ai_dev_cold:
+    extends:
+      file: compose.ai-dev-common.yml
+      service: ai_dev_common
+    build:
+      context: .
+      dockerfile: ./Dockerfile.ai-dev
+      args:
+        BASE_IMAGE: ai_dev_${UNIQUE_PROJECT_NAME:?Error}-ai_dev_cold_base:latest
+        USERNAME: agent
+        USER_UID: 43927
+        USER_GID: 43927
+
+    volumes:
+      # The container can modify everything under /home/vscode
+      - type: volume
+        source: ai_dev_cold_home
+        target: /home/agent
+
+volumes:
+  ai_dev_cold_home:
