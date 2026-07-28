@@ -17,6 +17,9 @@ RUN apt-get update \
         procps \
         ripgrep \
         unzip \
+        bubblewrap \
+        nodejs \
+        npm \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=yq /usr/bin/yq /usr/local/bin/yq
