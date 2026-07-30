@@ -1,0 +1,27 @@
+approval_policy = "never"
+allow_login_shell = false
+default_permissions = "workspace-no-slash-tmp"
+
+[permissions.workspace-no-slash-tmp]
+extends = ":workspace"
+
+[permissions.workspace-no-slash-tmp.filesystem]
+":slash_tmp" = "read"
+
+[permissions.workspace-no-slash-tmp.network]
+enabled = false
+
+[shell_environment_policy]
+inherit = "core"
+exclude = [
+    "SSH_AUTH_SOCK",
+    "SSH_ASKPASS",
+    "GIT_ASKPASS",
+    "VSCODE_GIT_ASKPASS_*",
+    "GH_TOKEN",
+    "GITHUB_TOKEN",
+]
+
+[shell_environment_policy.set]
+GIT_OPTIONAL_LOCKS = "0"
+TMPDIR = "/workspace/.project-tmp"

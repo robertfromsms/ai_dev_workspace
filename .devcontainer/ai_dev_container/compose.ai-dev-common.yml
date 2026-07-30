@@ -21,6 +21,7 @@ services:
     # can't gain new privileges
     security_opt:
       - no-new-privileges:true
+      - seccomp=./security/codex-bwrap-seccomp.json
 
     environment:
       HOME: /home/agent
@@ -47,11 +48,27 @@ services:
         bind:
           create_host_path: false
 
+      # Protected codex folder
+      - type: bind
+        source: ../../.codex
+        target: /workspace/.codex
+        read_only: true
+        bind:
+          create_host_path: false
+
       # Mount .git into the devcontainer, but read only, so a lot of git functionalities are disabled
       - type: bind
         source: ../../.git
         target: /workspace/.git
         read_only: true
+        bind:
+          create_host_path: true
+
+      # Mount .project-tmp into the devcontainer, if missing, create it
+      - type: bind
+        source: ../../.project-tmp
+        target: /workspace/.project-tmp
+        read_only: false
         bind:
           create_host_path: true
 

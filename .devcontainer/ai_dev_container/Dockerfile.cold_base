@@ -6,6 +6,7 @@ FROM debian:bookworm-slim
 
 USER root
 
+# currently bubblewrap doesn't work, I will leave it here
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         bash \
