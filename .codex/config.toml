@@ -25,3 +25,19 @@ exclude = [
 [shell_environment_policy.set]
 GIT_OPTIONAL_LOCKS = "0"
 TMPDIR = "/workspace/.project-tmp"
+
+# this is mcp block for Context7
+[mcp_servers.context7]
+command = "/usr/local/bin/context7-mcp"
+args = ["--transport", "stdio"]
+enabled = true
+required = false
+enabled_tools = [
+    "resolve-library-id",
+    "query-docs",
+]
+default_tools_approval_mode = "auto"
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+
+# You would add more mcp blocks below after you install them locally
