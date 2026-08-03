@@ -1,0 +1,53 @@
+# syntax=docker/dockerfile:1
+
+ARG NODE_VERSION=22-bookworm-slim
+FROM node:${NODE_VERSION}
+
+ARG MCP_PROXY_VERSION=0.12.0
+ARG MCP_PYTHON_SDK_VERSION=1.27.1
+ARG DUCKDUCKGO_MCP_VERSION=0.5.0
+ARG CONTEXT7_MCP_VERSION=3.2.5
+ARG BRAVE_SEARCH_MCP_VERSION=2.1.0
+
+USER root
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        python3 \
+        python3-venv \
+    && rm -rf /var/lib/apt/lists/*
+
+# this is where you would install mcp
+# you need to install them locally
+
+# mcp-proxy, duckduckgo-mcp
+RUN python3 -m venv /opt/mcp-python \
+    && /opt/mcp-python/bin/pip install --no-cache-dir \
+        "mcp==${MCP_PYTHON_SDK_VERSION}" \
+        "mcp-proxy==${MCP_PROXY_VERSION}" \
+        "duckduckgo-mcp-server[browser]==${DUCKDUCKGO_MCP_VERSION}"
+
+# context7, brave-search
+RUN npm install --global \
+        "@upstash/context7-mcp@${CONTEXT7_MCP_VERSION}" \
+        "@brave/brave-search-mcp-server@${BRAVE_SEARCH_MCP_VERSION}" \
+    && npm cache clean --force
+
+# install more mcp here
+# after installing a mcp here, add corresponding mcp block in .codex/config.toml
+
+ENV HOME=/home/node \
+    PATH=/opt/mcp-python/bin:/usr/local/bin:/usr/bin:/bin \
+    TMPDIR=/tmp \
+    XDG_CACHE_HOME=/tmp/cache
+
+USER node
+
+EXPOSE 8080
+
+# this is mounted in, the image doesnt include the entrypoint by default.
+ENTRYPOINT ["/bin/sh", "/etc/mcp-proxy/docker-mcp-gateway-entrypoint.sh"]
+
+CMD ["/opt/mcp-python/bin/mcp-proxy", "--host", "0.0.0.0", "--port", "8080", "--named-server-config", "/etc/mcp-proxy/servers.json"]
+

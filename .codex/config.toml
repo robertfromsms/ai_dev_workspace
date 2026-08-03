@@ -26,10 +26,13 @@ exclude = [
 GIT_OPTIONAL_LOCKS = "0"
 TMPDIR = "/workspace/.project-tmp"
 
-# this is mcp block for Context7
+# MCP blocks
+# mcp-proxy exposes each installed stdio MCP as a separate Streamable HTTP
+# endpoint on the private Compose network.
+
+# Context7 provides current developer documentation.
 [mcp_servers.context7]
-command = "/usr/local/bin/context7-mcp"
-args = ["--transport", "stdio"]
+url = "http://mcp_gateway:8080/servers/context7/mcp"
 enabled = true
 required = false
 enabled_tools = [
@@ -40,4 +43,50 @@ default_tools_approval_mode = "auto"
 startup_timeout_sec = 20
 tool_timeout_sec = 60
 
-# You would add more mcp blocks below after you install them locally
+# Brave Search provides general internet search through a local stdio MCP
+# process. BRAVE_API_KEY is supplied to mcp_gateway service through docker secret
+# disabled by default due to needing api key
+[mcp_servers.brave_search]
+url = "http://mcp_gateway:8080/servers/brave_search/mcp"
+enabled = false
+required = false
+enabled_tools = ["brave_web_search"]
+default_tools_approval_mode = "auto"
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+
+# this is for duckduckgo, there's potentially some issues with ddg blocking you
+# if the agent search too often or too much or something...
+[mcp_servers.duckduckgo]
+url = "http://mcp_gateway:8080/servers/duckduckgo/mcp"
+enabled = true
+required = false
+enabled_tools = [
+    "search",
+    "fetch_content",
+]
+default_tools_approval_mode = "auto"
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+# this is the mcp for official openai documentation, which includes codex manual
+# this mcp is not installed locally, the agent directly access it by 
+# https://developers.openai.com/mcp
+[mcp_servers.openaiDeveloperDocs]
+url = "https://developers.openai.com/mcp"
+enabled = true
+required = false
+enabled_tools = [
+    "search_openai_docs",
+    "fetch_openai_doc",
+    "list_openai_docs",
+    "get_openapi_spec",
+]
+default_tools_approval_mode = "auto"
+startup_timeout_sec = 30
+tool_timeout_sec = 60
+
+# After adding more mcp blocks here, you would add the corresponding mcp config in mcp/servers.json
+# if you can install an mcp locally, you should, it's more of a pain in the ass. If you're not
+# installing the mcp locally, then you would just include the direct url and won't have to add
+# anything to the mcp_gateway

@@ -56,6 +56,14 @@ services:
         bind:
           create_host_path: false
 
+      # Protected mcp folder
+      - type: bind
+        source: ../../mcp
+        target: /workspace/mcp
+        read_only: true
+        bind:
+          create_host_path: false
+
       # Mount .git into the devcontainer, turns out codex (and hopefully other agentic frontends) makes .git readonly inside bubblewrap
       - type: bind
         source: ../../.git

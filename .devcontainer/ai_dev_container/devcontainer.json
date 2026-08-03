@@ -1,11 +1,12 @@
 {
   "name": "AI Dev Container",
-  "initializeCommand": "docker compose -f ${localWorkspaceFolder}/.devcontainer/ai_dev_container/compose.ai-dev-cold.yml run --rm --build --no-deps ai_dev_cold_base /workspace/.devcontainer/ai_dev_container/ai_dev_scripts/run-validate-unique-project-name.sh && docker compose -f ${localWorkspaceFolder}/.devcontainer/ai_dev_container/compose.ai-dev-cold.yml build ai_dev_cold_base",
+  "initializeCommand": "docker compose -f ${localWorkspaceFolder}/.devcontainer/ai_dev_container/compose.ai-dev-cold.yml run --rm --build --no-deps ai_dev_cold_base /workspace/.devcontainer/ai_dev_container/ai_dev_scripts/run-validate-unique-project-name.sh && docker compose -f ${localWorkspaceFolder}/.devcontainer/ai_dev_container/compose.ai-dev-cold.yml build ai_dev_cold_base mcp_gateway",
   "dockerComposeFile": [
     "compose.ai-dev-cold.yml"
   ],
   "service": "ai_dev_cold",
   "runServices": [
+    "mcp_gateway",
     "ai_dev_cold"
   ],
   "workspaceFolder": "/workspace",
