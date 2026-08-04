@@ -1,4 +1,20 @@
 services:
+  searxng:
+    image: docker.io/searxng/searxng:2026.7.26-b060c780d
+    init: true
+    restart: unless-stopped
+    environment:
+      FORCE_OWNERSHIP: "false"
+      SEARXNG_LIMITER: "false"
+      SEARXNG_PUBLIC_INSTANCE: "false"
+    volumes:
+      - ./searxng/settings.yml:/etc/searxng/settings.yml:ro
+      - searxng_cache:/var/cache/searxng
+    expose:
+      - "8080"
+    security_opt:
+      - no-new-privileges:true
+
   mcp_gateway:
     build:
       context: .
@@ -31,7 +47,13 @@ services:
         mode: "0400"
     expose:
       - "8080"
+    depends_on:
+      searxng:
+        condition: service_started
 
 secrets:
   brave_api_key:
     file: ${BRAVE_API_KEY_FILE:-./blank_secret}
+
+volumes:
+  searxng_cache:

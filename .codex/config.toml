@@ -86,6 +86,20 @@ default_tools_approval_mode = "auto"
 startup_timeout_sec = 30
 tool_timeout_sec = 60
 
+# Self-hosted metasearch through the private SearXNG Compose service.
+# searxng is a bit heavy, it involves a completely separate docker service
+# still goes through the mcp_gateway
+[mcp_servers.searxng]
+url = "http://mcp_gateway:8080/servers/searxng/mcp"
+enabled = true
+required = false
+enabled_tools = [
+    "searxng_web_search",
+]
+default_tools_approval_mode = "auto"
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
 # After adding more mcp blocks here, you would add the corresponding mcp config in mcp/servers.json
 # if you can install an mcp locally, you should, it's more of a pain in the ass. If you're not
 # installing the mcp locally, then you would just include the direct url and won't have to add

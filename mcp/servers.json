@@ -49,6 +49,17 @@
         "TMPDIR": "/tmp",
         "XDG_CACHE_HOME": "/tmp/cache"
       }
+    },
+    "searxng": {
+      "enabled": true,
+      "command": "/usr/local/bin/mcp-searxng",
+      "env": {
+        "SEARXNG_URL": "http://searxng:8080",
+        "HOME": "/home/node",
+        "PATH": "/opt/mcp-python/bin:/usr/local/bin:/usr/bin:/bin",
+        "TMPDIR": "/tmp",
+        "XDG_CACHE_HOME": "/tmp/cache"
+      }
     }
   }
 }

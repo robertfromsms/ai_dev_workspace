@@ -8,6 +8,7 @@ ARG MCP_PYTHON_SDK_VERSION=1.27.1
 ARG DUCKDUCKGO_MCP_VERSION=0.5.0
 ARG CONTEXT7_MCP_VERSION=3.2.5
 ARG BRAVE_SEARCH_MCP_VERSION=2.1.0
+ARG SEARXNG_MCP_VERSION=1.0.3
 
 USER root
 
@@ -32,6 +33,7 @@ RUN python3 -m venv /opt/mcp-python \
 RUN npm install --global \
         "@upstash/context7-mcp@${CONTEXT7_MCP_VERSION}" \
         "@brave/brave-search-mcp-server@${BRAVE_SEARCH_MCP_VERSION}" \
+        "mcp-searxng@${SEARXNG_MCP_VERSION}" \
     && npm cache clean --force
 
 # install more mcp here
