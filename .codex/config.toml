@@ -1,6 +1,15 @@
 approval_policy = "never"
+
 allow_login_shell = false
+
 default_permissions = "workspace-no-slash-tmp"
+
+# project doc section
+
+# it doesn't have to be AGENTS.md, you can input the fallback filenames here
+# project_doc_fallback_filenames = ["TEAM_GUIDE.md", ".agents.md"]
+# make the combined AGENTS.md/project doc be bigger
+project_doc_max_bytes = 65536
 
 [permissions.workspace-no-slash-tmp]
 extends = ":workspace"
