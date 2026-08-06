@@ -11,6 +11,17 @@ default_permissions = "workspace-no-slash-tmp"
 # make the combined AGENTS.md/project doc be bigger
 project_doc_max_bytes = 65536
 
+#  general features block
+[features]
+memories = true
+
+# memories block
+[memories]
+generate_memories = true
+use_memories = true
+disable_on_external_context = true
+min_rate_limit_remaining_percent = 50
+
 [permissions.workspace-no-slash-tmp]
 extends = ":workspace"
 
