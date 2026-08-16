@@ -31,6 +31,9 @@ extends = ":workspace"
 [permissions.workspace-no-slash-tmp.network]
 enabled = false
 
+[permissions.workspace-no-slash-tmp.filesystem.":workspace_roots"]
+"current_context.md" = "read"
+
 [shell_environment_policy]
 inherit = "core"
 exclude = [
