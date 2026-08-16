@@ -32,24 +32,6 @@
         "XDG_CACHE_HOME": "/tmp/cache"
       }
     },
-    "duckduckgo": {
-      "enabled": true,
-      "command": "/opt/mcp-python/bin/duckduckgo-mcp-server",
-      "args": [
-        "--search-backend",
-        "auto",
-        "--fetch-backend",
-        "auto"
-      ],
-      "env": {
-        "DDG_REGION": "wt-wt",
-        "DDG_SAFE_SEARCH": "MODERATE",
-        "HOME": "/home/node",
-        "PATH": "/opt/mcp-python/bin:/usr/local/bin:/usr/bin:/bin",
-        "TMPDIR": "/tmp",
-        "XDG_CACHE_HOME": "/tmp/cache"
-      }
-    },
     "searxng": {
       "enabled": true,
       "command": "/usr/local/bin/mcp-searxng",

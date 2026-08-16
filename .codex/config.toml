@@ -78,20 +78,6 @@ default_tools_approval_mode = "auto"
 startup_timeout_sec = 20
 tool_timeout_sec = 60
 
-# this is for duckduckgo, there's potentially some issues with ddg blocking you
-# if the agent search too often or too much or something...
-[mcp_servers.duckduckgo]
-url = "http://mcp_gateway:8080/servers/duckduckgo/mcp"
-enabled = true
-required = false
-enabled_tools = [
-    "search",
-    "fetch_content",
-]
-default_tools_approval_mode = "auto"
-startup_timeout_sec = 30
-tool_timeout_sec = 120
-
 # this is the mcp for official openai documentation, which includes codex manual
 # this mcp is not installed locally, the agent directly access it by 
 # https://developers.openai.com/mcp

@@ -27,6 +27,6 @@ RUN apt-get update \
 COPY --from=yq /usr/bin/yq /usr/local/bin/yq
 
 # install codex cli
-RUN npm install --global @openai/codex@0.145.0
+RUN npm install --global @openai/codex@0.147.0
 
 CMD ["sleep", "infinity"]
