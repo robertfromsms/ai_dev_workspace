@@ -109,7 +109,7 @@ default_tools_approval_mode = "auto"
 startup_timeout_sec = 30
 tool_timeout_sec = 120
 
-# After adding more mcp blocks here, you would add the corresponding mcp config in mcp/servers.json
+# After adding more mcp blocks here, you would add the corresponding mcp config in agentic_tools/mcp/servers.json
 # if you can install an mcp locally, you should, it's more of a pain in the ass. If you're not
 # installing the mcp locally, then you would just include the direct url and won't have to add
-# anything to the mcp_gateway
+# any config to servers.json

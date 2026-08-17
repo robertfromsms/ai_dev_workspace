@@ -1,7 +1,7 @@
 name: ai_dev_${UNIQUE_PROJECT_NAME:?Set UNIQUE_PROJECT_NAME in .devcontainer/ai_dev_container/.env, must be lowercase and no spaces}
 
 include:
-  - ../../mcp/compose.mcp-gateway.yml
+  - ../../agentic_tools/mcp/compose.mcp-gateway.yml
 
 services:
   ai_dev_cold_base:

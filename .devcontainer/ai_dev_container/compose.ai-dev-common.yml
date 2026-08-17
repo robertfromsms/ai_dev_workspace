@@ -56,18 +56,10 @@ services:
         bind:
           create_host_path: false
 
-      # Protected mcp folder
+      # Protected agentic_tools folder
       - type: bind
-        source: ../../mcp
-        target: /workspace/mcp
-        read_only: true
-        bind:
-          create_host_path: false
-
-      # Protected hook_scripts folder
-      - type: bind
-        source: ../../hook_scripts
-        target: /workspace/hook_scripts
+        source: ../../agentic_tools
+        target: /workspace/agentic_tools
         read_only: true
         bind:
           create_host_path: false
