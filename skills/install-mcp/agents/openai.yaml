@@ -1,0 +1,4 @@
+interface:
+  display_name: "Install MCP"
+  short_description: "Plan and stage for MCP installations safely"
+  default_prompt: "Use $install-mcp to research and stage a user-applied MCP integration for this workspace."
