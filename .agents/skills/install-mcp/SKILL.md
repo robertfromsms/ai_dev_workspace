@@ -163,6 +163,7 @@ In `README.md`, record:
 - the user must manually finish the installation by merging each candidate file with the respective current file outside of devcontainer, the user should review the differences, make any relevant changes and complete the merge
 - after the manual installation/merging is complete, start up devcontainer/ai development workspace, ask the agent to check to see if the mcp is operational
 - (if relevant) any new necessary service inside of compose.mcp-gateway.yml
+- (if relevant) instruct the user that after completing the installation of proposed changed files, they must also add the new service to `runServices` list in `/workspace/.devcontainer/ai_dev_container/devcontainer.json`, this is the devcontainer configs; the new service will spin up after starting up devcontainer
 - (if relevant) manual secret-file and `/workspace/agentic_tools/mcp/.env` steps without any credential value, you can give and use an example
 - (if relevant) briefly explain to the user how to obtain the credential
 - (if relevant) instruct the user to make the installed wrapper executable, such as `chmod 0755`
