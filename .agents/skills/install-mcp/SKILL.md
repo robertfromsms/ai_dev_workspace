@@ -82,7 +82,8 @@ Get explicit user approval for the plan before preparing the proposed change bun
    - Per MCP secret wrapper executable at `/workspace/.project-tmp/install-mcp/<server-id>/files/<per-MCP secret wrapper>`; after the handoff, this wrapper would be installed under `/workspace/agentic_tools/mcp/secret_wrappers/`.
 
 - **Local gateway:** install the package in `Dockerfile.mcp`, define its stdio process in `servers.json`, and point the current runtime at `http://mcp_gateway:8080/servers/<server-id>/mcp`.
-- **Remote MCP:** leave the gateway files unchanged and point the current agentic runtime configuration directly at the verified HTTPS URL.
+- **Remote, credential-less:** leave the gateway files unchanged and point the current runtime configuration directly at the verified HTTPS endpoint.
+- **Remote, credential-necessary:** route the remote MCP through `mcp_gateway`. Configure `servers.json` to use a per-MCP secret wrapper; the wrapper uses the credential made available through Compose and `.env` (`.env.tmpl` is the checked in for record). Configure the current runtime configuration with the mcp_gateway url for this MCP. Leave `Dockerfile.mcp` and the gateway entrypoint unchanged when the existing pinned `mcp-proxy` supports the remote transport and authentication method.
 
 Keep the gateway definition runtime-agnostic. Prepare the current runtime adapter candidate using its current documented MCP schema.
 
@@ -127,10 +128,16 @@ If the MCP must require a credential/API key to function, then it must go throug
 
 #### Remote
 
-1. The workflow for a remote credential-necessary MCP would extend from the remote, credential-less MCP workflow.
-2. Edit the copied-over pristine `/workspace/.project-tmp/install-mcp/<server-id>/files/servers.json` to directly connect the mcp-proxy/mcp_gateway with the verified HTTPS MCP URL,
-3. With the available credential, again following the established pattern, mcp-proxy then should be able to directly connect to the remote mcp.
-4. Edit the copied-over pristine runtime configuration to add a block for the desired MCP with the gateway URL and conservative tool settings.
+1. Verify the official endpoint, transport (`streamablehttp` or `sse`), and exact authentication scheme.
+2. A remote MCP cannot read a Docker secret file. Determine whether the pinned `mcp-proxy` can translate the locally stored credential into the authentication required by the remote endpoint without placing the credential in configuration or process arguments.
+3. For a static bearer token:
+   - mount the credential into `mcp_gateway` as a Docker secret
+   - create a protected per-MCP wrapper that reads the secret, exports it as `API_ACCESS_TOKEN`, and `exec`s `/opt/mcp-python/bin/mcp-proxy` in remote-client mode with the verified transport and endpoint
+   - configure `servers.json` to launch that wrapper as the named stdio server
+   - point the current runtime at `http://mcp_gateway:8080/servers/<server-id>/mcp`
+4. Do not put a credential in `servers.json`, the runtime configuration, wrapper script, command arguments, README, or staged `.env`.
+5. Do not assume the bearer-token wrapper works for custom headers, OAuth client credentials, interactive OAuth, cookies, or signed requests. If the pinned proxy cannot implement the documented authentication without exposing the credential, report the limitation and do not stage an unsafe guessed configuration.
+6. Leave `Dockerfile.mcp`, the gateway entrypoint and exposed ports unchanged unless research proves one is required. Do not add additional Compose service unless absolutely necessary.
 
 #### Credential pattern
 
@@ -176,3 +183,4 @@ Briefly validate the proposed change bundle before handoff:
 2. Compare every candidate with its source and confirm the bundle contains only approved differences.
 3. Refer to `/workspace/.project-tmp/install-mcp/<server-id>/checksum.json`, compute the checksums of all current source files and confirm all current source checksums still match with the recorded checksums in `checksum.json` before handoff; flag drift instead of silently rebasing.
 4. Check the bundle for credential values, private host paths, caches, and unrelated files. Make sure none are present.
+5. For a credentialed remote MCP, confirm that the wrapper is silent on stdout, does not enable shell tracing, never prints the credential, and does not place it in process arguments. Parse `servers.json`, Compose, and the runtime configuration; run ShellCheck on the wrapper.

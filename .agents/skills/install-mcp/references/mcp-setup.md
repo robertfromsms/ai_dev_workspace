@@ -8,6 +8,7 @@
 - [`servers.json` pattern](#serversjson-pattern)
 - [Agentic runtime configuration](#agentic-runtime-configuration)
 - [API-key patterns](#api-key-patterns)
+- [Credentialed remote MCP](#credentialed-remote-mcp)
 
 ## Files and responsibilities
 
@@ -140,3 +141,84 @@ exec /usr/local/bin/brave-search-mcp-server "$@"
 ```
 
 For a remote MCP that requires an API key, the API key is available in the mcp_gateway service just like before. `servers.json` is configured to work with the verified official url; additional local installation may not be necessary. The key-necessary remote MCP would be available to the agentic runtime through the mcp_gateway. This case is comparatively more complicated and may require several iterations, including manually by the user, to get working.
+
+### Credentialed remote MCP
+
+A remote MCP cannot access a Docker secret file inside `mcp_gateway`. The secret file is local credential storage. A per-MCP wrapper converts its contents into an authentication input supported by the remote-client `mcp-proxy`.
+
+For a remote MCP accepting `Authorization: Bearer <token>`:
+
+```text
+agentic runtime
+  -> http://mcp_gateway:8080/servers/<server-id>/mcp
+  -> outer mcp-proxy named server
+  -> per-MCP wrapper over stdio
+  -> child mcp-proxy remote client
+  -> verified HTTPS remote MCP
+```
+
+The wrapper reads the Docker secret and immediately replaces itself with the remote-client proxy:
+
+```sh
+#!/bin/sh
+set -eu
+
+secret_file="/run/secrets/example_remote_token"
+
+if [ ! -r "$secret_file" ]; then
+    echo "Required MCP credential file is not readable: $secret_file" >&2
+    exit 1
+fi
+
+API_ACCESS_TOKEN="$(cat "$secret_file")"
+
+if [ -z "$API_ACCESS_TOKEN" ]; then
+    echo "Required MCP credential is empty" >&2
+    exit 1
+fi
+
+export API_ACCESS_TOKEN
+
+exec /opt/mcp-python/bin/mcp-proxy \
+    --transport streamablehttp \
+    https://example.com/mcp
+```
+
+Use the remote MCP's verified transport and official endpoint. Do not print ordinary output to stdout because stdout carries the MCP protocol. Do not use `set -x`, print the credential, or pass the bearer token through command arguments.
+
+Configure the wrapper as the named stdio command in `servers.json`:
+
+```json
+{
+  "mcpServers": {
+    "example_remote": {
+      "enabled": true,
+      "command": "/workspace/agentic_tools/mcp/secret_wrappers/example-remote.sh",
+      "args": [],
+      "env": {
+        "HOME": "/home/node",
+        "PATH": "/opt/mcp-python/bin:/usr/local/bin:/usr/bin:/bin",
+        "TMPDIR": "/tmp",
+        "XDG_CACHE_HOME": "/tmp/cache"
+      }
+    }
+  }
+}
+```
+
+The runtime connects only to the gateway endpoint:
+
+```text
+http://mcp_gateway:8080/servers/example_remote/mcp
+```
+
+`mcp-proxy`'s named-server configuration treats the wrapper as a stdio MCP. Fields such as `transportType` do not configure the wrapper's outbound connection; the wrapper must pass the verified transport to the child `mcp-proxy`.
+
+This pattern is suitable for static bearer tokens because `mcp-proxy` supports `API_ACCESS_TOKEN`. Other authentication schemes require separate evaluation:
+
+- Custom headers require `--headers`; passing the credential as its value exposes it in process arguments.
+- OAuth client credentials use CLI options that may likewise expose the client secret.
+- Interactive OAuth cannot be implemented by merely reading a static Docker secret.
+- Cookies, signed requests, and provider-specific authentication may require a purpose-built credential bridge.
+
+Do not stage one of these alternatives unless current primary documentation establishes a credential-safe implementation.
