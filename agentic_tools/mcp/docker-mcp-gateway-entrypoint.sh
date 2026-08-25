@@ -1,3 +1,6 @@
+#!/bin/sh
+set -eu
+
 # this entrypoint may be useful in the future for other post starting mcp_gateway service
 # but before starting the mcp-proxy
 
