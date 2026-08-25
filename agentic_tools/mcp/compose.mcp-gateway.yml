@@ -37,8 +37,15 @@ services:
       - /tmp:rw,nosuid,nodev,noexec,size=256m,mode=1777
       - /home/node:rw,nosuid,nodev,noexec,size=64m,mode=0700,uid=1000,gid=1000
     volumes:
+      # for this entrypoint that may never be used
       - ./docker-mcp-gateway-entrypoint.sh:/etc/mcp-proxy/docker-mcp-gateway-entrypoint.sh:ro
+      # servers.json needs to be at /etc/mcp-proxy/ to make sure the mcp-proxy sees the config
       - ./servers.json:/etc/mcp-proxy/servers.json:ro
+      # mounting the entire workspace into mcp_gateway service for codegraph, lsp and other stuff
+      - type: bind
+        source: ../../.
+        target: /workspace
+        read_only: true
     secrets:
       - source: brave_api_key
         target: brave_api_key

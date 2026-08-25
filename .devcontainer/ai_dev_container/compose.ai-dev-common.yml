@@ -64,6 +64,14 @@ services:
         bind:
           create_host_path: false
 
+      # Protected agents folder
+      - type: bind
+        source: ../../.agents
+        target: /workspace/.agents
+        read_only: true
+        bind:
+          create_host_path: false
+
       # Mount .git into the devcontainer, turns out codex (and hopefully other agentic frontends) makes .git readonly inside bubblewrap
       - type: bind
         source: ../../.git
