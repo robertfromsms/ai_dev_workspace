@@ -140,8 +140,6 @@ export BRAVE_API_KEY
 exec /usr/local/bin/brave-search-mcp-server "$@"
 ```
 
-For a remote MCP that requires an API key, the API key is available in the mcp_gateway service just like before. `servers.json` is configured to work with the verified official url; additional local installation may not be necessary. The key-necessary remote MCP would be available to the agentic runtime through the mcp_gateway. This case is comparatively more complicated and may require several iterations, including manually by the user, to get working.
-
 ### Credentialed remote MCP
 
 A remote MCP cannot access a Docker secret file inside `mcp_gateway`. The secret file is local credential storage. A per-MCP wrapper converts its contents into an authentication input supported by the remote-client `mcp-proxy`.

@@ -83,7 +83,7 @@ Get explicit user approval for the plan before preparing the proposed change bun
 
 - **Local gateway:** install the package in `Dockerfile.mcp`, define its stdio process in `servers.json`, and point the current runtime at `http://mcp_gateway:8080/servers/<server-id>/mcp`.
 - **Remote, credential-less:** leave the gateway files unchanged and point the current runtime configuration directly at the verified HTTPS endpoint.
-- **Remote, credential-necessary:** route the remote MCP through `mcp_gateway`. Configure `servers.json` to use a per-MCP secret wrapper; the wrapper uses the credential made available through Compose and `.env` (`.env.tmpl` is the checked in for record). Configure the current runtime configuration with the mcp_gateway url for this MCP. Leave `Dockerfile.mcp` and the gateway entrypoint unchanged when the existing pinned `mcp-proxy` supports the remote transport and authentication method.
+- **Remote, credential-necessary:** route the remote MCP through `mcp_gateway`. Configure `servers.json` to use a per-MCP secret wrapper; the wrapper uses the credential made available through Compose and `.env` (`.env.tmpl` documents the path variable), with `.env` only supplying the secret-file on host. path Configure the current runtime configuration with the mcp_gateway url for this MCP. Leave `Dockerfile.mcp` and the gateway entrypoint unchanged when the existing pinned `mcp-proxy` supports the remote transport and authentication method.
 
 Keep the gateway definition runtime-agnostic. Prepare the current runtime adapter candidate using its current documented MCP schema.
 
@@ -102,7 +102,7 @@ The self-contained proposed change bundle:
 
 - The private `/workspace/agentic_tools/mcp/.env` may contain regular envs and/or external secret-file paths, never credentials. Using docker secrets, for example, brave_api_key is available at `/run/secrets/brave_api_key` inside `mcp_gateway` container (the file contains the api key).
 - Never stage a credential/secret value, the user's private `/workspace/agentic_tools/mcp/.env`, credentials, generated caches, or unrelated project changes
-- Include only required proposed changed files. A remote MCP normally needs only the agentic runtime configuration. A keyless local MCP normally needs the Dockerfile, `servers.json`, and runtime configuration; compose and the entrypoint remain unchanged
+- Include only required proposed changed files. A credential-less remote MCP normally needs only the agentic runtime configuration. A keyless local MCP normally needs the Dockerfile, `servers.json`, and runtime configuration; compose and the entrypoint remain unchanged
 
 ### Local, credential-less MCP
 
@@ -124,7 +124,7 @@ If the MCP must require a credential/API key to function, then it must go throug
 
 #### Local
 1. The workflow for a local credential-necessary MCP is largely the same as a local, credential-less MCP.
-2. The credential, following the established pattern, would be available for the MCP and likely used in `servers.json`.
+2. The credential, following the established pattern, would be available for the MCP through a wrapper script, which is used in `servers.json`.
 
 #### Remote
 
@@ -148,8 +148,8 @@ If the MCP must require a credential/API key to function, then it must go throug
 - The user's `/workspace/agentic_tools/mcp/.env` contains only that external file's path.
 - Edit the copied-over pristine `/workspace/.project-tmp/install-mcp/<server-id>/files/.env.tmpl` to add the new secret file path with no value.
 - Never create or copy the user's `/workspace/agentic_tools/mcp/.env`.
-- Prefer an MCP's native `--api-key-file` or equivalent option.
-- If it accepts only an environment variable, propose a small per-MCP wrapper (refer to the "API-key patterns" section in `references/mcp-setup.md`).
+- For a locally installed MCP, prefer its native `--api-key-file` or equivalent option.
+- If a locally installed MCP accepts only an environment variable, use a per-MCP wrapper.
 - Edit this wrapper executable created in Phase 3 and follow the pattern established in the "API-key patterns" section to meet its requirements.
 - Use this wrapper in the proposed changed `servers.json` for the desired MCP's command instead of its absolute-path command; use the final absolute wrapper path `/workspace/agentic_tools/mcp/secret_wrappers/<per-MCP secret wrapper>`
 
