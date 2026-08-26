@@ -46,6 +46,10 @@ services:
         source: ../../.
         target: /workspace
         read_only: true
+      # using a named volume for codegraph
+      - type: volume
+        source: codegraph_index
+        target: /workspace/.codegraph
     secrets:
       - source: brave_api_key
         target: brave_api_key
@@ -64,3 +68,4 @@ secrets:
 
 volumes:
   searxng_cache:
+  codegraph_index:

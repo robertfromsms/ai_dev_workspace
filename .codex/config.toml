@@ -109,6 +109,19 @@ default_tools_approval_mode = "auto"
 startup_timeout_sec = 30
 tool_timeout_sec = 120
 
+# Local semantic code graph over the project repo. The index is
+# stored in the gateway's writable codegraph_index named volume.
+[mcp_servers.codegraph]
+url = "http://mcp_gateway:8080/servers/codegraph/mcp"
+enabled = true
+required = false
+enabled_tools = [
+    "codegraph_explore",
+]
+default_tools_approval_mode = "auto"
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
 # After adding more mcp blocks here, you would add the corresponding mcp config in agentic_tools/mcp/servers.json
 # if you can install an mcp locally, you should, it's more of a pain in the ass. If you're not
 # installing the mcp locally, then you would just include the direct url and won't have to add

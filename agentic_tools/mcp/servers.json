@@ -42,6 +42,23 @@
         "TMPDIR": "/tmp",
         "XDG_CACHE_HOME": "/tmp/cache"
       }
+    },
+    "codegraph": {
+      "enabled": true,
+      "command": "/usr/local/bin/codegraph",
+      "args": [
+        "serve",
+        "--mcp",
+        "--path",
+        "/workspace"
+      ],
+      "env": {
+        "DO_NOT_TRACK": "1",
+        "HOME": "/home/node",
+        "PATH": "/opt/mcp-python/bin:/usr/local/bin:/usr/bin:/bin",
+        "TMPDIR": "/tmp",
+        "XDG_CACHE_HOME": "/tmp/cache"
+      }
     }
   }
 }

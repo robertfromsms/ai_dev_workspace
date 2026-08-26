@@ -8,6 +8,7 @@ ARG MCP_PYTHON_SDK_VERSION=1.29.0
 ARG CONTEXT7_MCP_VERSION=4.0.2
 ARG BRAVE_SEARCH_MCP_VERSION=2.1.0
 ARG SEARXNG_MCP_VERSION=1.15.0
+ARG CODEGRAPH_VERSION=1.5.0
 
 USER root
 
@@ -27,12 +28,16 @@ RUN python3 -m venv /opt/mcp-python \
         "mcp==${MCP_PYTHON_SDK_VERSION}" \
         "mcp-proxy==${MCP_PROXY_VERSION}"
 
-# context7, brave-search
+# context7, brave-search, searxng, codegraph
 RUN npm install --global \
         "@upstash/context7-mcp@${CONTEXT7_MCP_VERSION}" \
         "@brave/brave-search-mcp-server@${BRAVE_SEARCH_MCP_VERSION}" \
         "mcp-searxng@${SEARXNG_MCP_VERSION}" \
+        "@colbymchenry/codegraph@${CODEGRAPH_VERSION}" \
     && npm cache clean --force
+
+# Seed an empty named volume with ownership matching the unprivileged gateway user.
+RUN install -d -o node -g node -m 0700 /workspace/.codegraph
 
 # install more mcp here
 # after installing a mcp here, add corresponding mcp block in .codex/config.toml
@@ -50,4 +55,3 @@ EXPOSE 8080
 ENTRYPOINT ["/bin/sh", "/etc/mcp-proxy/docker-mcp-gateway-entrypoint.sh"]
 
 CMD ["/opt/mcp-python/bin/mcp-proxy", "--host", "0.0.0.0", "--port", "8080", "--named-server-config", "/etc/mcp-proxy/servers.json"]
-
