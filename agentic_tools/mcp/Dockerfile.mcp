@@ -25,6 +25,7 @@ ARG PYRIGHT_VERSION=1.1.413
 ARG TYPESCRIPT_LANGUAGE_SERVER_VERSION=6.0.0
 # typescript-language-server 6.x currently documents TypeScript 6 as its peer.
 ARG TYPESCRIPT_VERSION=6.0.3
+ARG SOLARGRAPH_VERSION=0.60.2
 ARG JDTLS_VERSION=1.60.0
 ARG JDTLS_BUILD=202606262232
 
@@ -44,8 +45,14 @@ RUN apt-get update \
         ca-certificates \
         python3 \
         python3-venv \
+        ruby \
+        ruby-dev \
+    && gem install solargraph \
+        --version "${SOLARGRAPH_VERSION}" \
+        --no-document \
     && apt-get purge -y --auto-remove \
         build-essential \
+        ruby-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Eclipse JDT LS milestone archive. The checksum is published alongside the
@@ -86,9 +93,10 @@ RUN npm install --global \
         "@colbymchenry/codegraph@${CODEGRAPH_VERSION}" \
     && npm cache clean --force
 
-# Seed an empty named volume with ownership matching the unprivileged gateway user.
+# Seed empty named volumes with ownership matching the unprivileged gateway user.
 RUN install -d -o node -g node -m 0700 \
-    /workspace/.codegraph 
+    /workspace/.codegraph \
+    /var/cache/solargraph
 
 # install more mcp here
 # after installing a mcp here, add corresponding mcp block in .codex/config.toml

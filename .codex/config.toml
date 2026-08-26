@@ -169,6 +169,21 @@ default_tools_approval_mode = "approve"
 startup_timeout_sec = 60
 tool_timeout_sec = 120
 
+# mcp-language-server wraps Solargraph for Ruby.
+[mcp_servers.lsp_ruby]
+url = "http://mcp_gateway:8080/servers/lsp_ruby/mcp"
+enabled = true
+required = false
+enabled_tools = [
+    "definition",
+    "references",
+    "diagnostics",
+    "hover",
+]
+default_tools_approval_mode = "approve"
+startup_timeout_sec = 60
+tool_timeout_sec = 120
+
 # After adding more mcp blocks here, you would add the corresponding mcp config in agentic_tools/mcp/servers.json
 # if you can install an mcp locally, you should, it's more of a pain in the ass. If you're not
 # installing the mcp locally, then you would just include the direct url and won't have to add

@@ -49,6 +49,10 @@ services:
       - type: volume
         source: codegraph_index
         target: /workspace/.codegraph
+      # persistent generated documentation cache for Solargraph
+      - type: volume
+        source: solargraph_cache
+        target: /var/cache/solargraph
     secrets:
       - source: brave_api_key
         target: brave_api_key
@@ -68,3 +72,4 @@ secrets:
 volumes:
   searxng_cache:
   codegraph_index:
+  solargraph_cache:

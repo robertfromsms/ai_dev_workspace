@@ -115,6 +115,25 @@
         "TMPDIR": "/tmp",
         "XDG_CACHE_HOME": "/tmp/cache"
       }
+    },
+    "lsp_ruby": {
+      "enabled": true,
+      "command": "/usr/local/bin/mcp-language-server",
+      "args": [
+        "--workspace",
+        "/workspace",
+        "--lsp",
+        "/usr/local/bin/solargraph",
+        "--",
+        "stdio"
+      ],
+      "env": {
+        "HOME": "/home/node",
+        "PATH": "/opt/java/openjdk/bin:/opt/mcp-python/bin:/usr/local/bin:/usr/bin:/bin",
+        "SOLARGRAPH_CACHE": "/var/cache/solargraph",
+        "TMPDIR": "/tmp",
+        "XDG_CACHE_HOME": "/tmp/cache"
+      }
     }
   }
 }
