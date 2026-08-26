@@ -1,6 +1,9 @@
 # syntax=docker/dockerfile:1
 
 ARG NODE_VERSION=22-bookworm-slim
+ARG JAVA_RUNTIME_VERSION=21.0.12_8-jdk-jammy
+
+FROM eclipse-temurin:${JAVA_RUNTIME_VERSION} AS java_runtime
 FROM node:${NODE_VERSION}
 
 ARG MCP_PROXY_VERSION=0.12.0
@@ -10,14 +13,57 @@ ARG BRAVE_SEARCH_MCP_VERSION=2.1.0
 ARG SEARXNG_MCP_VERSION=1.15.0
 ARG CODEGRAPH_VERSION=1.5.0
 
+# related to Language servers
+ARG PYRIGHT_VERSION=1.1.413
+ARG TYPESCRIPT_LANGUAGE_SERVER_VERSION=6.0.0
+# typescript-language-server 6.x currently documents TypeScript 6 as its peer.
+ARG TYPESCRIPT_VERSION=6.0.3
+ARG RUBY_LSP_VERSION=0.26.10
+ARG JDTLS_VERSION=1.60.0
+ARG JDTLS_BUILD=202606262232
+
 USER root
+
+# Eclipse JDT LS requires Java 21 or newer. Copying the official Temurin JDK
+# also supplies javac and standard JDK tooling needed by Java build systems.
+COPY --from=java_runtime /opt/java/openjdk /opt/java/openjdk
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        build-essential \
         ca-certificates \
         python3 \
         python3-venv \
+        ruby \
+        ruby-dev \
+    && gem install ruby-lsp \
+        --version "${RUBY_LSP_VERSION}" \
+        --no-document \
+    && apt-get purge -y --auto-remove \
+        build-essential \
+        ruby-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Eclipse JDT LS milestone archive. The checksum is published alongside the
+# archive and intentionally fails the build if the version/build is changed
+# without also updating its integrity value.
+ADD --checksum=sha256:e94c303d8198f977930803582738771fd18c52c5492878410bf222b1aa81ef1d \
+    https://download.eclipse.org/jdtls/milestones/${JDTLS_VERSION}/jdt-language-server-${JDTLS_VERSION}-${JDTLS_BUILD}.tar.gz \
+    /tmp/jdtls.tar.gz
+
+RUN mkdir -p /opt/jdtls \
+    && tar -xzf /tmp/jdtls.tar.gz -C /opt/jdtls \
+    && rm /tmp/jdtls.tar.gz \
+    && chmod 0755 /opt/jdtls/bin/jdtls \
+    && ln -s /opt/jdtls/bin/jdtls /usr/local/bin/jdtls
+
+# Python and JavaScript/TypeScript language servers. One TypeScript language
+# server handles both JavaScript and TypeScript projects.
+RUN npm install --global \
+        "pyright@${PYRIGHT_VERSION}" \
+        "typescript@${TYPESCRIPT_VERSION}" \
+        "typescript-language-server@${TYPESCRIPT_LANGUAGE_SERVER_VERSION}" \
+    && npm cache clean --force
 
 # this is where you would install mcp
 # you need to install them locally
@@ -43,7 +89,8 @@ RUN install -d -o node -g node -m 0700 /workspace/.codegraph
 # after installing a mcp here, add corresponding mcp block in .codex/config.toml
 
 ENV HOME=/home/node \
-    PATH=/opt/mcp-python/bin:/usr/local/bin:/usr/bin:/bin \
+    JAVA_HOME=/opt/java/openjdk \
+    PATH=/opt/java/openjdk/bin:/opt/mcp-python/bin:/usr/local/bin:/usr/bin:/bin \
     TMPDIR=/tmp \
     XDG_CACHE_HOME=/tmp/cache
 
