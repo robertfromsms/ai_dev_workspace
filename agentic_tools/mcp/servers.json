@@ -59,6 +59,62 @@
         "TMPDIR": "/tmp",
         "XDG_CACHE_HOME": "/tmp/cache"
       }
+    },
+    "lsp_java": {
+      "enabled": true,
+      "command": "/usr/local/bin/mcp-language-server",
+      "args": [
+        "--workspace",
+        "/workspace",
+        "--lsp",
+        "/usr/local/bin/jdtls",
+        "--",
+        "-data",
+        "/tmp/jdtls-workspace"
+      ],
+      "env": {
+        "HOME": "/home/node",
+        "JAVA_HOME": "/opt/java/openjdk",
+        "PATH": "/opt/java/openjdk/bin:/opt/mcp-python/bin:/usr/local/bin:/usr/bin:/bin",
+        "TMPDIR": "/tmp",
+        "XDG_CACHE_HOME": "/tmp/cache"
+      }
+    },
+    "lsp_python": {
+      "enabled": false,
+      "command": "/usr/local/bin/mcp-language-server",
+      "args": [
+        "--workspace",
+        "/workspace",
+        "--lsp",
+        "/usr/local/bin/pyright-langserver",
+        "--",
+        "--stdio"
+      ],
+      "env": {
+        "HOME": "/home/node",
+        "PATH": "/opt/java/openjdk/bin:/opt/mcp-python/bin:/usr/local/bin:/usr/bin:/bin",
+        "TMPDIR": "/tmp",
+        "XDG_CACHE_HOME": "/tmp/cache"
+      }
+    },
+    "lsp_typescript": {
+      "enabled": false,
+      "command": "/usr/local/bin/mcp-language-server",
+      "args": [
+        "--workspace",
+        "/workspace",
+        "--lsp",
+        "/usr/local/bin/typescript-language-server",
+        "--",
+        "--stdio"
+      ],
+      "env": {
+        "HOME": "/home/node",
+        "PATH": "/opt/java/openjdk/bin:/opt/mcp-python/bin:/usr/local/bin:/usr/bin:/bin",
+        "TMPDIR": "/tmp",
+        "XDG_CACHE_HOME": "/tmp/cache"
+      }
     }
   }
 }

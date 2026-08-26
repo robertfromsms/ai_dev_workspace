@@ -2,6 +2,13 @@
 
 ARG NODE_VERSION=22-bookworm-slim
 ARG JAVA_RUNTIME_VERSION=21.0.12_8-jdk-jammy
+ARG GO_VERSION=1.24.13-bookworm
+ARG MCP_LANGUAGE_SERVER_VERSION=v0.1.1
+
+FROM golang:${GO_VERSION} AS mcp_language_server_builder
+ARG MCP_LANGUAGE_SERVER_VERSION
+RUN GOTOOLCHAIN=local CGO_ENABLED=0 go install -trimpath -ldflags="-s -w" \
+    "github.com/isaacphi/mcp-language-server@${MCP_LANGUAGE_SERVER_VERSION}"
 
 FROM eclipse-temurin:${JAVA_RUNTIME_VERSION} AS java_runtime
 FROM node:${NODE_VERSION}
@@ -18,7 +25,6 @@ ARG PYRIGHT_VERSION=1.1.413
 ARG TYPESCRIPT_LANGUAGE_SERVER_VERSION=6.0.0
 # typescript-language-server 6.x currently documents TypeScript 6 as its peer.
 ARG TYPESCRIPT_VERSION=6.0.3
-ARG RUBY_LSP_VERSION=0.26.10
 ARG JDTLS_VERSION=1.60.0
 ARG JDTLS_BUILD=202606262232
 
@@ -28,20 +34,18 @@ USER root
 # also supplies javac and standard JDK tooling needed by Java build systems.
 COPY --from=java_runtime /opt/java/openjdk /opt/java/openjdk
 
+# mcp-language-server wraps one stdio language server per configured MCP entry.
+COPY --from=mcp_language_server_builder --chmod=0755 \
+    /go/bin/mcp-language-server /usr/local/bin/mcp-language-server
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
         ca-certificates \
         python3 \
         python3-venv \
-        ruby \
-        ruby-dev \
-    && gem install ruby-lsp \
-        --version "${RUBY_LSP_VERSION}" \
-        --no-document \
     && apt-get purge -y --auto-remove \
         build-essential \
-        ruby-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Eclipse JDT LS milestone archive. The checksum is published alongside the
@@ -83,7 +87,8 @@ RUN npm install --global \
     && npm cache clean --force
 
 # Seed an empty named volume with ownership matching the unprivileged gateway user.
-RUN install -d -o node -g node -m 0700 /workspace/.codegraph
+RUN install -d -o node -g node -m 0700 \
+    /workspace/.codegraph 
 
 # install more mcp here
 # after installing a mcp here, add corresponding mcp block in .codex/config.toml

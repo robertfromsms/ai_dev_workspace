@@ -19,6 +19,8 @@
 
   // devContainer will not run the user's outside shell to discover envs
   "userEnvProbe": "none",
+
+   "shutdownAction": "stopCompose",
   
   "customizations": {
     "vscode": {

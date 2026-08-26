@@ -122,6 +122,53 @@ default_tools_approval_mode = "auto"
 startup_timeout_sec = 30
 tool_timeout_sec = 120
 
+# mcp-language-server wraps Eclipse JDT LS for Java.
+# hover disabled because currently broken, you can put it back in and see
+# if its working now
+[mcp_servers.lsp_java]
+url = "http://mcp_gateway:8080/servers/lsp_java/mcp"
+enabled = true
+required = false
+enabled_tools = [
+    "definition",
+    "references",
+    "diagnostics"
+]
+default_tools_approval_mode = "approve"
+startup_timeout_sec = 120
+tool_timeout_sec = 120
+
+# mcp-language-server wraps Pyright for Python.
+[mcp_servers.lsp_python]
+url = "http://mcp_gateway:8080/servers/lsp_python/mcp"
+enabled = false
+required = false
+enabled_tools = [
+    "definition",
+    "references",
+    "diagnostics",
+    "hover",
+]
+default_tools_approval_mode = "approve"
+startup_timeout_sec = 60
+tool_timeout_sec = 120
+
+# mcp-language-server wraps typescript-language-server for JavaScript and
+# TypeScript.
+[mcp_servers.lsp_typescript]
+url = "http://mcp_gateway:8080/servers/lsp_typescript/mcp"
+enabled = false
+required = false
+enabled_tools = [
+    "definition",
+    "references",
+    "diagnostics",
+    "hover",
+]
+default_tools_approval_mode = "approve"
+startup_timeout_sec = 60
+tool_timeout_sec = 120
+
 # After adding more mcp blocks here, you would add the corresponding mcp config in agentic_tools/mcp/servers.json
 # if you can install an mcp locally, you should, it's more of a pain in the ass. If you're not
 # installing the mcp locally, then you would just include the direct url and won't have to add
