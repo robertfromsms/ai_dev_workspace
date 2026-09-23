@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:1
 
-FROM mcr.microsoft.com/devcontainers/base:noble
+ARG DEVCONTAINER_BASE_VERSION=noble
+
+FROM mcr.microsoft.com/devcontainers/base:${DEVCONTAINER_BASE_VERSION}
 
 ARG USERNAME=human_user
 ARG USER_UID=43928
