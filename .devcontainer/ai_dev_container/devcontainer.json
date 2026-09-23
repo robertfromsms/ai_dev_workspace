@@ -1,17 +1,12 @@
 {
   "name": "AI Dev Container",
-  "initializeCommand": "docker compose -f ${localWorkspaceFolder}/.devcontainer/ai_dev_container/compose.ai-dev-cold.yml run --rm --build --no-deps ai_dev_cold_base /workspace/.devcontainer/ai_dev_container/ai_dev_scripts/run-validate-unique-project-name.sh && docker compose -f ${localWorkspaceFolder}/.devcontainer/ai_dev_container/compose.ai-dev-cold.yml build ai_dev_cold_base mcp_gateway",
+  "initializeCommand": "make ai-dev-up",
   "dockerComposeFile": [
-    "compose.ai-dev-cold.yml"
+    "compose.ai-dev.yml"
   ],
-  "service": "ai_dev_cold",
-  "runServices": [
-    "mcp_gateway",
-    "searxng",
-    "ai_dev_cold"
-  ],
+  "service": "ai_dev_user",
   "workspaceFolder": "/workspace",
-  "remoteUser": "agent",
+  "remoteUser": "human_user",
 
   // Avoid Dev Containers attempting to rewrite UID information at startup.
   "updateRemoteUserUID": false,
@@ -20,18 +15,5 @@
   // devContainer will not run the user's outside shell to discover envs
   "userEnvProbe": "none",
 
-   "shutdownAction": "stopCompose",
-  
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "saoudrizwan.claude-dev",
-        "openai.chatgpt"
-      ],
-      "settings": {
-        // "chat.disableAIFeatures": true, // if you want to disable copilot
-        "terminal.integrated.defaultProfile.linux": "bash"        
-      }
-    }
-  }
+   "shutdownAction": "stopCompose"
 }

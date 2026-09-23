@@ -48,7 +48,6 @@ get_clean_env_value() {
     printf '%s' "$value"
 }
 
-# this is used for both with-project and with the cold environment
 validate_unique_project_name() {
     local -r env_file="$1"
 

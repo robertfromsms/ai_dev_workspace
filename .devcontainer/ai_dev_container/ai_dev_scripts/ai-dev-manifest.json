@@ -3,16 +3,16 @@
   "env_file_tmpl": "/workspace/.devcontainer/ai_dev_container/.env.tmpl",
   "env_file": "/workspace/.devcontainer/ai_dev_container/.env",
   "paths": {
-    "ai_dev_cold_devcontainer": ".devcontainer/ai_dev_container/devcontainer.json",
-    "ai_dev_main_dockerfile": ".devcontainer/ai_dev_container/Dockerfile.ai-dev",
-    "ai_dev_cold_dockerfile": ".devcontainer/ai_dev_container/Dockerfile.cold_base",
+    "ai_dev_devcontainer": ".devcontainer/ai_dev_container/devcontainer.json",
+    "user_dockerfile": ".devcontainer/ai_dev_container/Dockerfile.user",
+    "agent_dockerfile": ".devcontainer/ai_dev_container/Dockerfile.agent",
     "gitignore": ".gitignore",
     "dockerignore": ".dockerignore",
     "ai_dev_manifest": ".devcontainer/ai_dev_container/ai_dev_scripts/ai-dev-manifest.json",
     "ai_dev_scripts_common_with_project": ".devcontainer/ai_dev_container/ai_dev_scripts/common-with-project.sh",
     "ai_dev_scripts_run_validate_unique_project_name": ".devcontainer/ai_dev_container/ai_dev_scripts/run-validate-unique-project-name.sh",
     "ai_dev_scripts_validate_unique_project_name": ".devcontainer/ai_dev_container/ai_dev_scripts/validate-unique-project-name.sh",
-    "compose_ai_dev_cold": ".devcontainer/ai_dev_container/compose.ai-dev-cold.yml",
-    "compose_ai_dev_common": ".devcontainer/ai_dev_container/compose.ai-dev-common.yml"
+    "compose_ai_dev": ".devcontainer/ai_dev_container/compose.ai-dev.yml",
+    "compose_ai_dev_sandbox": ".devcontainer/ai_dev_container/compose.ai-dev-sandbox.yml"
   }
 }

@@ -1,0 +1,104 @@
+services:
+  ai_dev_sandbox:
+    # this is a random number i picked between 1000 - 60000
+    user: "43927:43927"
+    working_dir: /workspace
+     # will override any entrypoint to nothing
+    entrypoint: []
+    # just sleep
+    command: ["sleep", "infinity"]
+
+    init: true
+    # The image's entire root filesystem is read-only.
+    read_only: true
+    # Do not allow privilege escalation.
+    privileged: false
+
+    # drop all root-only capabilities
+    cap_drop:
+      - ALL
+
+    # can't gain new privileges
+    security_opt:
+      - no-new-privileges:true
+      - seccomp=./security/codex-bwrap-seccomp.json
+
+    environment:
+      HOME: /home/agent
+      TMPDIR: /tmp
+
+    # Runtime-only writable areas. These disappear when the container stops.
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=1g,mode=1777
+
+    volumes:
+      # The container can modify the project folder
+      - type: bind
+        source: ../../.
+        target: /workspace
+        read_only: false
+        bind:
+          create_host_path: false
+
+      # Protected AI devcontainer folder
+      - type: bind
+        source: ../.
+        target: /workspace/.devcontainer
+        read_only: true
+        bind:
+          create_host_path: false
+
+      # Protected codex folder
+      - type: bind
+        source: ../../.codex
+        target: /workspace/.codex
+        read_only: true
+        bind:
+          create_host_path: false
+
+      # Protected agentic_tools folder
+      - type: bind
+        source: ../../agentic_tools
+        target: /workspace/agentic_tools
+        read_only: true
+        bind:
+          create_host_path: false
+
+      # Protected agents folder
+      - type: bind
+        source: ../../.agents
+        target: /workspace/.agents
+        read_only: true
+        bind:
+          create_host_path: false
+
+      # Mount .git into the devcontainer, turns out codex (and hopefully other agentic frontends) makes .git readonly inside bubblewrap
+      - type: bind
+        source: ../../.git
+        target: /workspace/.git
+        read_only: false
+        bind:
+          create_host_path: true
+
+      # Mount .project-tmp into the devcontainer, if missing, create it
+      - type: bind
+        source: ../../.project-tmp
+        target: /workspace/.project-tmp
+        read_only: false
+        bind:
+          create_host_path: true
+
+      # Protected files
+      - type: bind
+        source: ../../.gitignore
+        target: /workspace/.gitignore
+        read_only: true
+        bind:
+          create_host_path: false
+
+      - type: bind
+        source: ../../.dockerignore
+        target: /workspace/.dockerignore
+        read_only: true
+        bind:
+          create_host_path: false
