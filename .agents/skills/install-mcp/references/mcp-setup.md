@@ -17,7 +17,7 @@
 - `/workspace/agentic_tools/mcp/compose.mcp-gateway.yml`: configure the MCP docker services, such as mcp_gateway, required backends; useful configuration: secrets, volume mounts, envs, etc.
 - `/workspace/agentic_tools/mcp/.env.tmpl`: list supported local variables with blank values.
 - `/workspace/agentic_tools/mcp/docker-mcp-gateway-entrypoint.sh`: any potentially required startup command for the MCP, probably not necessary.
-- Agentic runtime config file, for example `.codex/config.toml`: connect the active runtime to local (with mcp_gateway) or remote MCP endpoints using that runtime's documented schema.
+- Agentic runtime config file, for example `/workspace/.codex/config.toml` and `/workspace/.opencode/opencode.jsonc`: connect the active runtime to local (with mcp_gateway) or remote MCP endpoints using that runtime's documented schema.
 
 ## Local and remote MCPs
 For a local MCP:
@@ -92,6 +92,22 @@ default_tools_approval_mode = "auto"
 startup_timeout_sec = 20
 tool_timeout_sec = 60
 ```
+
+### OpenCode example
+(yikes might need to come back and clean this up)
+
+For a local gateway MCP:
+
+```jsonc
+{
+  "mcp": {
+    "example_mcp": {
+      "type": "remote",
+      "url": "http://mcp_gateway:8080/servers/example_mcp/mcp",
+      "enabled": false
+    }
+  }
+}
 
 ## API-key patterns
 

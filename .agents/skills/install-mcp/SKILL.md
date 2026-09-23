@@ -1,6 +1,7 @@
 ---
 name: install-mcp
 description: Research, plan and stage proposed change bundle for user to apply in order to install and configure a desired MCP for this protected AI development workspace. Use when asked to add, install, integrate, replace, or upgrade an MCP. First, decide between a local installation that utilizes `mcp_gateway` and a remote MCP endpoint, determine whether the MCP requires credentials, such as an API key. Finally, complete researching, planning and staging of proposed changed bundle for installing the MCP.
+compatibility: Codex and OpenCode; protected AI development workspace with mcp_gateway
 ---
 
 # Install MCP
@@ -28,7 +29,7 @@ Treat the AI-development setup, including (but not limited to) the agentic runti
    - `/workspace/agentic_tools/mcp/compose.mcp-gateway.yml`
    - `/workspace/agentic_tools/mcp/docker-mcp-gateway-entrypoint.sh`
    - `/workspace/agentic_tools/mcp/.env.tmpl`
-   - the current agentic runtime configuration. The current agent must supply its own identity: codex, qwen code, dsh or others. For codex, it's `/workspace/.codex/config.toml`.
+   - the current agentic runtime configuration. The current agent must supply its own identity: codex, OpenCode qwen code, dsh or others. For codex, it's `/workspace/.codex/config.toml`. For OpenCode, use `/workspace/.opencode/opencode.jsonc`.
 3. Identify the requested MCP and the current agentic runtime that must be configured to use it.
 4. If the user requested a capability, search for an MCP with such capability.
 5. Use current primary sources to determine:
@@ -77,7 +78,8 @@ Get explicit user approval for the plan before preparing the proposed change bun
    - `/workspace/agentic_tools/mcp/.env.tmpl` -> `/workspace/.project-tmp/install-mcp/<server-id>/files/.env.tmpl`
    - `/workspace/agentic_tools/mcp/docker-mcp-gateway-entrypoint.sh` -> `/workspace/.project-tmp/install-mcp/<server-id>/files/docker-mcp-gateway-entrypoint.sh`
    - the current agentic runtime configuration -> inside `/workspace/.project-tmp/install-mcp/<server-id>/files/`
-   - for example, for codex, it would be `/workspace/.codex/config.toml` -> `/workspace/.project-tmp/install-mcp/<server-id>/files/config.toml`
+   - for codex, `/workspace/.codex/config.toml` -> `/workspace/.project-tmp/install-mcp/<server-id>/files/config.toml`
+   - for OpenCode, `/workspace/.opencode/opencode.jsonc` -> `/workspace/.project-tmp/install-mcp/<server-id>/files/opencode.jsonc`
 4. ONLY CREATE IF ABSOLUTELY NECESSARY:
    - Per MCP secret wrapper executable at `/workspace/.project-tmp/install-mcp/<server-id>/files/<per-MCP secret wrapper>`; after the handoff, this wrapper would be installed under `/workspace/agentic_tools/mcp/secret_wrappers/`.
 
@@ -170,7 +172,6 @@ In `README.md`, record:
 - the user must manually finish the installation by merging each candidate file with the respective current file outside of devcontainer, the user should review the differences, make any relevant changes and complete the merge
 - after the manual installation/merging is complete, start up devcontainer/ai development workspace, ask the agent to check to see if the mcp is operational
 - (if relevant) any new necessary service inside of compose.mcp-gateway.yml
-- (if relevant) instruct the user that after completing the installation of proposed changed files, they must also add the new service to `runServices` list in `/workspace/.devcontainer/ai_dev_container/devcontainer.json`, this is the devcontainer configs; the new service will spin up after starting up devcontainer
 - (if relevant) manual secret-file and `/workspace/agentic_tools/mcp/.env` steps without any credential value, you can give and use an example
 - (if relevant) briefly explain to the user how to obtain the credential
 - (if relevant) instruct the user to make the installed wrapper executable, such as `chmod 0755`
