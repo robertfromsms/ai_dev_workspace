@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 /workspace/agentic_tools/hook_scripts/mention_current_context.py --runtime codex",
+            "command": "tsx /workspace/.codex/hooks/mention_current_context.ts",
             "timeout": 5,
             "statusMessage": "Mentioning current context"
           }
