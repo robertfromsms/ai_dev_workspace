@@ -7,6 +7,7 @@ FROM node:${NODE_VERSION}
 ARG CODEX_VERSION=0.155.1
 ARG OPENCODE_VERSION=1.18.31
 ARG TSX_VERSION=4.23.15
+ARG BUN_VERSION=1.4.2
 
 ARG USERNAME=agent
 ARG USER_UID=43927
@@ -37,7 +38,8 @@ RUN apt-get update \
 RUN npm install --global \
         @openai/codex@${CODEX_VERSION} \
         opencode-ai@${OPENCODE_VERSION} \
-        tsx@${TSX_VERSION}
+        tsx@${TSX_VERSION} \
+        bun@${BUN_VERSION}
 
 # create the agent user
 RUN groupadd --gid "${USER_GID}" "${USERNAME}" \
