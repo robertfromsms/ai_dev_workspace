@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@opencode-ai/plugin": "1.18.31"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.4"
+  }
+}

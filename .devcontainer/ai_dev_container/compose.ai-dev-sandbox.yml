@@ -3,8 +3,8 @@ services:
     # this is a random number i picked between 1000 - 60000
     user: "43927:43927"
     working_dir: /workspace
-     # will override any entrypoint to nothing
-    entrypoint: []
+    entrypoint:
+      - /workspace/.devcontainer/ai_dev_container/ai-dev-agent-entrypoint.sh
     # just sleep
     command: ["sleep", "infinity"]
 
@@ -27,9 +27,9 @@ services:
       HOME: /home/agent
       TMPDIR: /tmp
 
-    # Runtime-only writable areas. These disappear when the container stops.
+    # Runtime-only RWX /tmp. These disappear when the container stops.
     tmpfs:
-      - /tmp:rw,nosuid,nodev,size=1g,mode=1777
+      - /tmp:rw,exec,nosuid,nodev,size=1g,mode=1777
 
     volumes:
       # The container can modify the project folder
@@ -53,6 +53,22 @@ services:
         source: ../../.codex
         target: /workspace/.codex
         read_only: true
+        bind:
+          create_host_path: false
+
+      # Protected opencode folder
+      - type: bind
+        source: ../../.opencode
+        target: /workspace/.opencode
+        read_only: true
+        bind:
+          create_host_path: false
+
+      # But make the opencode node_modules RW
+      - type: bind
+        source: ../../.opencode/node_modules
+        target: /workspace/.opencode/node_modules
+        read_only: false
         bind:
           create_host_path: false
 

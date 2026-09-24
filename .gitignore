@@ -1,3 +1,5 @@
 .devcontainer/ai_dev_container/.env
 .project-tmp/
+.opencode/node_modules/*
+!.opencode/node_modules/.keep
 agentic_tools/mcp/.env
