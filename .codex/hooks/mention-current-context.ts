@@ -25,3 +25,4 @@ const message: string | null = mentionCurrentContextCore(
 if (message !== null) {
   process.stdout.write(message);
 }
+ 

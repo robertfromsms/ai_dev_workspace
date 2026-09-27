@@ -117,7 +117,7 @@
     "lsp_java_diagnostics": "allow",
 
     /*
-    * Python LSP
+    * Python LSP (mcp not active)
     */
     "lsp_python_*": "deny",
     "lsp_python_definition": "allow",
@@ -126,7 +126,7 @@
     "lsp_python_hover": "allow",
 
     /*
-    * TypeScript LSP
+    * TypeScript LSP (mcp not active)
     */
     "lsp_typescript_*": "deny",
     "lsp_typescript_definition": "allow",
@@ -196,22 +196,24 @@
 
     /*
      * Python LSP
+     * Disabled mcp for now
      */
     "lsp_python": {
         "type": "remote",
         "url": "http://mcp_gateway:8080/servers/lsp_python/mcp",
-        "enabled": true,
+        "enabled": false,
         "oauth": false,
         "timeout": 120000
     },
 
     /*
      * TypeScript LSP
+     * Disabled mcp for now
      */
     "lsp_typescript": {
         "type": "remote",
         "url": "http://mcp_gateway:8080/servers/lsp_typescript/mcp",
-        "enabled": true,
+        "enabled": false,
         "oauth": false,
         "timeout": 120000
     },
