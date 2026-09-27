@@ -92,7 +92,7 @@ services:
       - type: bind
         source: ../../.git
         target: /workspace/.git
-        read_only: false
+        read_only: true
         bind:
           create_host_path: true
 
@@ -115,6 +115,13 @@ services:
       - type: bind
         source: ../../.dockerignore
         target: /workspace/.dockerignore
+        read_only: true
+        bind:
+          create_host_path: false
+
+      - type: bind
+        source: ../../current_context.md
+        target: /workspace/current_context.md
         read_only: true
         bind:
           create_host_path: false

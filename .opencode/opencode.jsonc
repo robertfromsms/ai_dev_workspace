@@ -1,0 +1,256 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // OpenCode is version-pinned and updated through Docker.
+  "autoupdate": false,
+
+  // Do not allow OpenCode session sharing.
+  "share": "disabled",
+
+  /*
+   * Bash/shell will go through bubblewrap, no exceptions
+   */  
+  "shell": "/workspace/.opencode/bin/opencode-bubblewrap-wrapper",
+
+  /*
+   * Default-deny security model.
+   *
+   * Any OpenCode capability that we have not explicitly reviewed and
+   * approved is unavailable to the model.
+   */
+  "permission": {
+    "*": "deny",
+
+    /*
+     * Observational / read-only native tools.
+     *
+     * These may run directly through OpenCode and should NOT ask
+     * the user for permission.
+     */
+    "read": "allow",
+    "grep": "allow",
+    "glob": "allow",
+    "list": "allow",
+    "skill": "allow",
+    "question": "allow",
+
+    /*
+     * Controlled Internet access.
+     *
+     * The agent may search the Internet through OpenCode's web-search
+     * capability. Arbitrary network access from shell commands will
+     * eventually be blocked separately with Bubblewrap.
+     */
+    "websearch": "allow",
+
+    /*
+     * Arbitrary URL fetching is intentionally unavailable.
+     */
+    "webfetch": "deny",
+
+    /*
+     * File mutation.
+     *
+     * OpenCode's "edit" permission covers its native file-modification
+     * capabilities. File changes will eventually be performed through
+     * the Bubblewrapped shell instead.
+     */
+    "edit": "deny",
+
+    /*
+     * Process execution.
+     *
+     * KEEP DENIED until the OpenCode shell has been forced through our
+     * Bubblewrap wrapper.
+     *
+     * Once that path is verified, this becomes:
+     *
+     *     "bash": "allow"
+     *
+     * "allow" means commands run without an approval prompt.
+     */
+    "bash": "allow",
+
+    /*
+     * Subagents can potentially introduce additional execution paths.
+     * Keep disabled until we verify they inherit the same sandbox.
+     */
+    "task": "deny",
+
+    /*
+     * OpenCode's native LSP launches/manages language-server processes.
+     * We use our controlled MCP-hosted LSP infrastructure instead.
+     */
+    "lsp": "deny",
+
+    /*
+     * OpenCode-managed mutable task state.
+     * Not required right now.
+     */
+    "todowrite": "deny",
+
+    /*
+     * Don't allow OpenCode tools to escape the project through its
+     * external-directory mechanism.
+     */
+    "external_directory": "deny",
+
+    /*
+     * Context7
+     */
+    "context7_*": "deny",
+    "context7_resolve-library-id": "allow",
+    "context7_query-docs": "allow",
+
+    /*
+    * CodeGraph
+    */
+    "codegraph_*": "deny",
+    "codegraph_codegraph_explore": "allow",
+
+    /*
+    * Java LSP
+    */
+    "lsp_java_*": "deny",
+    "lsp_java_definition": "allow",
+    "lsp_java_references": "allow",
+    "lsp_java_diagnostics": "allow",
+
+    /*
+    * Python LSP
+    */
+    "lsp_python_*": "deny",
+    "lsp_python_definition": "allow",
+    "lsp_python_references": "allow",
+    "lsp_python_diagnostics": "allow",
+    "lsp_python_hover": "allow",
+
+    /*
+    * TypeScript LSP
+    */
+    "lsp_typescript_*": "deny",
+    "lsp_typescript_definition": "allow",
+    "lsp_typescript_references": "allow",
+    "lsp_typescript_diagnostics": "allow",
+    "lsp_typescript_hover": "allow",
+
+    /*
+    * Ruby LSP
+    */
+    "lsp_ruby_*": "deny",
+    "lsp_ruby_definition": "allow",
+    "lsp_ruby_references": "allow",
+    "lsp_ruby_diagnostics": "allow",
+    "lsp_ruby_hover": "allow",
+
+    /*
+     * Brave Search (mcp not active)
+     *
+     * Server currently disabled, but permissions are ready if enabled later.
+     */
+    "brave_search_*": "deny",
+    "brave_search_brave_web_search": "allow",
+
+    /*
+     * SearXNG (mcp not active)
+     *
+     * Server currently disabled, but permissions are ready if enabled later.
+     */
+    "searxng_*": "deny",
+    "searxng_searxng_web_search": "allow"
+  },
+
+  "mcp": {
+    /*
+     * Context7
+     */
+    "context7": {
+        "type": "remote",
+        "url": "http://mcp_gateway:8080/servers/context7/mcp",
+        "enabled": true,
+        "oauth": false,
+        "timeout": 60000
+    },
+
+    /*
+     * CodeGraph
+     */
+    "codegraph": {
+        "type": "remote",
+        "url": "http://mcp_gateway:8080/servers/codegraph/mcp",
+        "enabled": true,
+        "oauth": false,
+        "timeout": 120000
+    },
+
+    /*
+     * Java LSP
+     */
+    "lsp_java": {
+        "type": "remote",
+        "url": "http://mcp_gateway:8080/servers/lsp_java/mcp",
+        "enabled": true,
+        "oauth": false,
+        "timeout": 120000
+    },
+
+    /*
+     * Python LSP
+     */
+    "lsp_python": {
+        "type": "remote",
+        "url": "http://mcp_gateway:8080/servers/lsp_python/mcp",
+        "enabled": true,
+        "oauth": false,
+        "timeout": 120000
+    },
+
+    /*
+     * TypeScript LSP
+     */
+    "lsp_typescript": {
+        "type": "remote",
+        "url": "http://mcp_gateway:8080/servers/lsp_typescript/mcp",
+        "enabled": true,
+        "oauth": false,
+        "timeout": 120000
+    },
+
+    /*
+     * Ruby LSP
+     */
+    "lsp_ruby": {
+        "type": "remote",
+        "url": "http://mcp_gateway:8080/servers/lsp_ruby/mcp",
+        "enabled": true,
+        "oauth": false,
+        "timeout": 120000
+    },
+
+    /*
+     * Brave Search
+     *
+     * Disabled mcp for now.
+     */
+    "brave_search": {
+        "type": "remote",
+        "url": "http://mcp_gateway:8080/servers/brave_search/mcp",
+        "enabled": false,
+        "oauth": false,
+        "timeout": 60000
+    },
+
+    /*
+     * SearXNG
+     *
+     * Disabled mcp for now.
+     */
+    "searxng": {
+        "type": "remote",
+        "url": "http://mcp_gateway:8080/servers/searxng/mcp",
+        "enabled": false,
+        "oauth": false,
+        "timeout": 60000
+    }
+  }
+}

@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+BWRAP="/usr/bin/bwrap"
+REAL_SHELL="/bin/bash"
+
+WORKSPACE="/workspace"
+PROJECT_TMP="/workspace/.project-tmp"
+HOME_DIR="/home/agent"
+
+# OpenCode should invoke the configured shell as:
+#
+#   opencode-bubblewrap-wrapper -c "<command>"
+#
+# Fail closed if it invokes us some other way.
+if [[ "$#" -ne 2 || "$1" != "-c" ]]; then
+    echo "ERROR: expected: $0 -c <command>" >&2
+    exit 64
+fi
+
+COMMAND="$2"
+
+if [[ ! -x "$BWRAP" ]]; then
+    echo "ERROR: Bubblewrap not found at $BWRAP" >&2
+    exit 127
+fi
+
+if [[ ! -x "$REAL_SHELL" ]]; then
+    echo "ERROR: shell not found at $REAL_SHELL" >&2
+    exit 127
+fi
+
+# OpenCode shell commands should originate somewhere inside /workspace.
+CURRENT_DIR="$(pwd -P)"
+
+case "$CURRENT_DIR" in
+    "$WORKSPACE"|"$WORKSPACE"/*)
+        ;;
+    *)
+        echo "ERROR: refusing to start shell outside $WORKSPACE: $CURRENT_DIR" >&2
+        exit 126
+        ;;
+esac
+
+# Writable temp location for agent-controlled commands.
+mkdir -p "$PROJECT_TMP"
+
+exec "$BWRAP" \
+    --die-with-parent \
+    \
+    --unshare-net \
+    --unshare-pid \
+    --unshare-ipc \
+    \
+    --ro-bind / / \
+    \
+    --bind "$WORKSPACE" "$WORKSPACE" \
+    \
+    --ro-bind "$HOME_DIR" "$HOME_DIR" \
+    --ro-bind /tmp /tmp \
+    \
+    --ro-bind-try "$WORKSPACE/.opencode" "$WORKSPACE/.opencode" \
+    --ro-bind-try "$WORKSPACE/current_context.md" "$WORKSPACE/current_context.md" \
+    \
+    --proc /proc \
+    --dev /dev \
+    \
+    --setenv TMPDIR "$PROJECT_TMP" \
+    --setenv GIT_OPTIONAL_LOCKS "0" \
+    --setenv SHELL "$REAL_SHELL" \
+    \
+    --chdir "$CURRENT_DIR" \
+    \
+    -- \
+    "$REAL_SHELL" --noprofile --norc -c "$COMMAND"
