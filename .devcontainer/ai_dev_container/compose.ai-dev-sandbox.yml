@@ -1,6 +1,7 @@
 services:
   ai_dev_sandbox:
     # this is a random number i picked between 1000 - 60000
+    # for the agent user
     user: "43927:43927"
     working_dir: /workspace
     entrypoint:

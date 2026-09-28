@@ -10,8 +10,10 @@ services:
       dockerfile: ./Dockerfile.user
       args:
         USERNAME: human_user
-        USER_UID: 43928
-        USER_GID: 43928
+        USER_UID: 43927
+        USER_GID: 43927
+    # for human_user
+    user: "43927:43927"
     working_dir: /workspace
 
     volumes:
