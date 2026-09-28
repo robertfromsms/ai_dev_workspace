@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "tsx /workspace/.codex/hooks/mention_current_context.ts",
+            "command": "tsx /workspace/.codex/hooks/mention-current-context.ts",
             "timeout": 5,
             "statusMessage": "Mentioning current context"
           }
