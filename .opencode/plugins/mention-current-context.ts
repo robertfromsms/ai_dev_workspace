@@ -1,8 +1,12 @@
 import type { Plugin } from "@opencode-ai/plugin";
-import { mentionCurrentContextCore } from
+import {
+  mentionCurrentContextCore,
+  resetCurrentContextState,
+ } from
   "../../agentic_tools/hook_scripts/mention-current-context/mention-current-context-core";
 
 const mentionCurrentContext: Plugin = async () => ({
+  // primary hook for injecting the content of current_context.md
   "chat.message": async (input, output) => {
     const sessionId: string = input.sessionID;
 
@@ -30,6 +34,12 @@ const mentionCurrentContext: Plugin = async () => ({
     }
 
     return;
+  },
+
+  // secondary hook for resetting the context state upon compaction
+  // so upon next prompt submission, the context inject will work fine
+  "experimental.session.compacting": async (input) => {
+    resetCurrentContextState("opencode", input.sessionID);
   },
 });
 

@@ -1,5 +1,5 @@
 {
-  "description": "Inject user-maintained current context before prompt submission, if it has changed.",
+  "description": "Current hooks: Inject user-maintained current context before prompt submission, if it has changed. Reset the session's current context state after compaction",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -9,6 +9,18 @@
             "command": "tsx /workspace/.codex/hooks/mention-current-context.ts",
             "timeout": 5,
             "statusMessage": "Mentioning current context"
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "tsx /workspace/.codex/hooks/reset-current-context-state.ts",
+            "timeout": 5,
+            "statusMessage": "Resetting current context state"
           }
         ]
       }

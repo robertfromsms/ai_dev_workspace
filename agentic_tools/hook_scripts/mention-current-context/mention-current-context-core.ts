@@ -3,11 +3,40 @@ import {
   mkdirSync,
   readFileSync,
   writeFileSync,
+  rmSync,
 } from "node:fs";
 import { join } from "node:path";
 
+const projectRoot = "/workspace";
+
+const currentContextPath = join(
+    projectRoot,
+    "current_context.md",
+);
+
+const stateDirectory = join(
+  projectRoot,
+  ".project-tmp",
+  "current-context-hook-state",
+);
+
 function sha256(value: string): string {
   return createHash("sha256").update(value, "utf8").digest("hex");
+}
+
+export function currentContextStatePath(
+  runtime: string,
+  sessionId: string,
+): string {
+  const sessionHash = sha256(`${runtime}\0${sessionId}`);
+  return join(stateDirectory, `${sessionHash}.sha256`);
+}
+
+export function resetCurrentContextState(
+  runtime: string,
+  sessionId: string,
+): void {
+  rmSync(currentContextStatePath(runtime, sessionId), { force: true });
 }
 
 export function mentionCurrentContextCore(
@@ -15,25 +44,10 @@ export function mentionCurrentContextCore(
   sessionId: string,
 ): string | null{
 
-    const projectRoot = "/workspace";
-    const currentContextPath = join(
-        projectRoot,
-        "current_context.md",
-    );
-    const stateDirectory = join(
-        projectRoot,
-        ".project-tmp",
-        "current-context-hook-state",
-    );
-
     const content = readFileSync(currentContextPath, "utf8");
     const contentHash = sha256(content);
-    const sessionHash = sha256(`${runtime}\0${sessionId}`);
 
-    const statePath = join(
-        stateDirectory,
-        `${sessionHash}.sha256`,
-    );
+    const statePath = currentContextStatePath(runtime, sessionId);
 
     let previousHash: string | null = null;
 
