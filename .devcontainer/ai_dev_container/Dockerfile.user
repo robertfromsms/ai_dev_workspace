@@ -38,6 +38,8 @@ RUN apt-get update \
         ripgrep \
         ruby-full \
         ruby-dev \
+        nodejs \
+        npm \
         shellcheck \
         sqlite3 \
         tmux \
