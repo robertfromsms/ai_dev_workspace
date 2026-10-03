@@ -27,6 +27,7 @@ services:
     environment:
       HOME: /home/agent
       TMPDIR: /tmp
+      OPENCODE_ENABLE_EXA: "1"
 
     # Runtime-only RWX /tmp. These disappear when the container stops.
     tmpfs:
