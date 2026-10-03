@@ -3,6 +3,3 @@
 .opencode/node_modules/*
 !.opencode/node_modules/.keep
 agentic_tools/mcp/.env
-.omo/run-continuation/*
-!.omo/run-continuation/.keep
-.omo/*.bak.*
