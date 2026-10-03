@@ -1,0 +1,1 @@
+export { omoPlugin as default } from "oh-my-openagent";

@@ -89,6 +89,22 @@ services:
         bind:
           create_host_path: false
 
+      # Protected omo folder
+      - type: bind
+        source: ../../.omo
+        target: /workspace/.omo
+        read_only: true
+        bind:
+          create_host_path: false
+
+      # But make the omo run-continuation RW
+      - type: bind
+        source: ../../.omo/run-continuation
+        target: /workspace/.omo/run-continuation
+        read_only: false
+        bind:
+          create_host_path: false
+
       # Mount .git into the devcontainer, turns out codex (and hopefully other agentic frontends) makes .git readonly inside bubblewrap
       - type: bind
         source: ../../.git

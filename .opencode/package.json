@@ -2,7 +2,8 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@opencode-ai/plugin": "1.18.31"
+    "@opencode-ai/plugin": "1.18.31",
+    "oh-my-openagent": "5.1.9"
   },
   "devDependencies": {
     "@types/node": "22.20.4"

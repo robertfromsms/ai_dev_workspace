@@ -1,0 +1,41 @@
+{
+  "[opencode]": {
+    "auto_update": false,
+    "telemetry": false,
+    // "disabled_tools": [
+    //   "task",
+    //   "call_omo_agent",
+    //   "background_output",
+    //   "background_cancel",
+    //   "interactive_bash",
+    //   "skill_mcp",
+    //   "grep",
+    //   "glob",
+    //   "skill"
+    // ],
+    "sisyphus_agent": {
+      "default_builder_enabled": true,
+      "planner_enabled": true,
+      "replace_plan": false
+    },
+    "agents": {
+      "OpenCode-Builder": {
+        "mode": "primary"
+      }
+    },
+    "disabled_mcps": [
+      "lsp",
+      "grep_app"
+    ],
+    "claude_code": {
+      "mcp": false,
+      "hooks": false,
+      "plugins": false
+    }
+  },
+  "_migrations": [
+    "2026-08-reasoning-unification"
+  ]
+}
+
+// NEED TO REVIEW THIS!!!

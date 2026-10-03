@@ -7,6 +7,11 @@
   // Do not allow OpenCode session sharing.
   "share": "disabled",
 
+  // plugins
+  "plugin": [
+    "oh-my-openagent@5.1.9"
+  ],
+
   /*
    * Bash/shell will go through bubblewrap, no exceptions
    */  
@@ -42,6 +47,12 @@
      * eventually be blocked separately with Bubblewrap.
      */
     "websearch": "allow",
+
+    /*
+     * OMO's Exa MCP websearch, the one above is for regular opencode
+     * this one is specifically for OMO
+     */ 
+    "websearch_web_search_exa": "allow",
 
     /*
      * Arbitrary URL fetching is intentionally unavailable.
