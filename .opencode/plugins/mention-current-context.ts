@@ -1,46 +1,57 @@
-import type { Plugin } from "@opencode-ai/plugin";
+import { Plugin } from "@opencode/plugin";
 import {
   mentionCurrentContextCore,
   resetCurrentContextState,
- } from
-  "../../agentic_tools/hook_scripts/mention-current-context/mention-current-context-core";
+} from "../../agentic_tools/hook_scripts/mention-current-context/mention-current-context-core";
 
-const mentionCurrentContext: Plugin = async () => ({
-  // primary hook for injecting the content of current_context.md
-  "chat.message": async (input, output) => {
-    const sessionId: string = input.sessionID;
+export default Plugin.define({
+  id: "mention-current-context",
 
-    if (typeof sessionId !== "string" || !(sessionId)) {
-      throw new Error(
-        "OpenCode hook event is missing a valid sessionID",
-      );
-    }
+  async setup(ctx) {
+    await ctx.session.hook("prompt", (event) => {
+      const sessionId = event.sessionID;
 
-    const runtime: string = "opencode";
+      if (typeof sessionId !== "string" || !sessionId) {
+        throw new Error("OpenCode prompt hook is missing a valid sessionID");
+      }
 
-    // if no text part, don't do anything
-    const textPart = output.parts.find(
-      (part) => part.type === "text" && !part.synthetic && !part.ignored,
-    );
-    if (textPart?.type !== "text") return;
+      // do nothing when there is no user prompt text.
+      if (!event.prompt.text) return;
 
+      const message = mentionCurrentContextCore("opencode", sessionId);
+      if (message === null) return;
 
-    const message: string | null = mentionCurrentContextCore(
-      runtime,
-      sessionId
-    );
-    if (message !== null) {
-      textPart.text = `${message}\n\n${textPart.text}`;
-    }
+      const prefix = `${message}\n\n`;
+      const offset = prefix.length;
 
-    return;
-  },
+      // opencode records positions of @mentions within the prompt text. Prepending
+      // the context moves those mentions, so update their positions too.
+      const shiftMentions = <
+        T extends { mention?: { start: number; end: number } },
+      >(
+        items: readonly T[] | undefined,
+      ): T[] | undefined =>
+        items?.map((item) =>
+          item.mention
+            ? {
+                ...item,
+                mention: {
+                  ...item.mention,
+                  start: item.mention.start + offset,
+                  end: item.mention.end + offset,
+                },
+              }
+            : item,
+        );
 
-  // secondary hook for resetting the context state upon compaction
-  // so upon next prompt submission, the context inject will work fine
-  "experimental.session.compacting": async (input) => {
-    resetCurrentContextState("opencode", input.sessionID);
+      event.prompt.files = shiftMentions(event.prompt.files);
+      event.prompt.agents = shiftMentions(event.prompt.agents);
+      event.prompt.skills = shiftMentions(event.prompt.skills);
+      event.prompt.text = `${prefix}${event.prompt.text}`;
+    });
+
+    await ctx.session.hook("compaction", (event) => {
+      resetCurrentContextState("opencode", event.sessionID);
+    });
   },
 });
-
-export default mentionCurrentContext;
