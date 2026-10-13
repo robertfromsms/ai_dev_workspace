@@ -15,6 +15,11 @@
   // Do not launch formatters as another process-execution path.
   "formatter": false,
 
+  // use tinyfish, apparently it's free (500 searchs per hour)
+  "websearch": {
+    "provider": "tinyfish"
+  },
+
   // V2 evaluates rules in order; the LAST matching rule wins.
   "permissions": [
     // Deny anything we have not explicitly reviewed.
@@ -27,15 +32,20 @@
     { "action": "skill", "resource": "*", "effect": "allow" },
     { "action": "question", "resource": "*", "effect": "allow" },
     { "action": "websearch", "resource": "*", "effect": "allow" },
+    { "action": "external_directory", "resource": "*", "effect": "allow" },
 
     // Explicitly record the important denials.
     { "action": "webfetch", "resource": "*", "effect": "deny" },
-    { "action": "edit", "resource": "*", "effect": "deny" },
     { "action": "shell", "resource": "*", "effect": "deny" },
     { "action": "subagent", "resource": "*", "effect": "deny" },
     { "action": "execute", "resource": "*", "effect": "deny" },
-    { "action": "external_directory", "resource": "*", "effect": "deny" },
     { "action": "browser", "resource": "*", "effect": "deny" },
+
+    // specific settings for edit
+    { "action": "edit", "resource": "*", "effect": "allow" },
+    { "action": "edit", "resource": "/*", "effect": "deny" },
+    { "action": "edit", "resource": "../*", "effect": "deny" },
+    { "action": "edit", "resource": "*/../*", "effect": "deny" },
 
     // Context7.
     { "action": "context7_*", "resource": "*", "effect": "deny" },
