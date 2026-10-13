@@ -20,6 +20,16 @@
     "provider": "tinyfish"
   },
 
+  // plugins, this block is used for future plugins as well
+  "plugins": [
+      {
+        "package": "/workspace/.opencode/node_modules/rem-memory",
+        "options": {
+          "dir": "/home/agent/.local/share/opencode/memory"
+        }
+      }
+  ],
+
   // V2 evaluates rules in order; the LAST matching rule wins.
   "permissions": [
     // Deny anything we have not explicitly reviewed.

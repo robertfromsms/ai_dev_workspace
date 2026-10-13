@@ -2,7 +2,8 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@opencode/plugin": "2.0.27"
+    "@opencode/plugin": "2.0.27",
+    "rem-memory": "2.0.1"
   },
   "devDependencies": {
     "@types/node": "22.20.4"
