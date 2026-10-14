@@ -135,8 +135,8 @@
         "codemode": false,
         "oauth": false,
         "timeout": {
-          "startup": 120000,
-          "catalog": 120000,
+          "startup": 100000,
+          "catalog": 30000,
           "execution": 120000
         }
       },
@@ -148,8 +148,8 @@
         "codemode": false,
         "oauth": false,
         "timeout": {
-          "startup": 60000,
-          "catalog": 60000,
+          "startup": 100000,
+          "catalog": 30000,
           "execution": 120000
         }
       },
@@ -161,8 +161,8 @@
         "codemode": false,
         "oauth": false,
         "timeout": {
-          "startup": 60000,
-          "catalog": 60000,
+          "startup": 100000,
+          "catalog": 30000,
           "execution": 120000
         }
       },
@@ -174,8 +174,8 @@
         "codemode": false,
         "oauth": false,
         "timeout": {
-          "startup": 60000,
-          "catalog": 60000,
+          "startup": 100000,
+          "catalog": 30000,
           "execution": 120000
         }
       },
