@@ -95,20 +95,6 @@ default_tools_approval_mode = "auto"
 startup_timeout_sec = 30
 tool_timeout_sec = 60
 
-# Self-hosted metasearch through the private SearXNG Compose service.
-# searxng is a bit heavy, it involves a completely separate docker service
-# still goes through the mcp_gateway
-[mcp_servers.searxng]
-url = "http://mcp_gateway:8080/servers/searxng/mcp"
-enabled = true
-required = false
-enabled_tools = [
-    "searxng_web_search",
-]
-default_tools_approval_mode = "auto"
-startup_timeout_sec = 30
-tool_timeout_sec = 120
-
 # Local semantic code graph over the project repo. The index is
 # stored in the gateway's writable codegraph_index named volume.
 [mcp_servers.codegraph]

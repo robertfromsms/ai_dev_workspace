@@ -17,7 +17,6 @@ ARG MCP_PROXY_VERSION=0.12.0
 ARG MCP_PYTHON_SDK_VERSION=1.29.0
 ARG CONTEXT7_MCP_VERSION=4.0.2
 ARG BRAVE_SEARCH_MCP_VERSION=2.1.0
-ARG SEARXNG_MCP_VERSION=1.15.0
 ARG CODEGRAPH_VERSION=1.5.0
 
 # related to Language servers
@@ -85,11 +84,10 @@ RUN python3 -m venv /opt/mcp-python \
         "mcp==${MCP_PYTHON_SDK_VERSION}" \
         "mcp-proxy==${MCP_PROXY_VERSION}"
 
-# context7, brave-search, searxng, codegraph
+# context7, brave-search, codegraph
 RUN npm install --global \
         "@upstash/context7-mcp@${CONTEXT7_MCP_VERSION}" \
         "@brave/brave-search-mcp-server@${BRAVE_SEARCH_MCP_VERSION}" \
-        "mcp-searxng@${SEARXNG_MCP_VERSION}" \
         "@colbymchenry/codegraph@${CODEGRAPH_VERSION}" \
     && npm cache clean --force
 

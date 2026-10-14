@@ -15,11 +15,6 @@
   // Do not launch formatters as another process-execution path.
   "formatter": false,
 
-  // use tinyfish, apparently it's free (500 searchs per hour)
-  "websearch": {
-    "provider": "tinyfish"
-  },
-
   // plugins, this block is used for future plugins as well
   "plugins": [
       {
@@ -41,10 +36,10 @@
     { "action": "glob", "resource": "*", "effect": "allow" },
     { "action": "skill", "resource": "*", "effect": "allow" },
     { "action": "question", "resource": "*", "effect": "allow" },
-    { "action": "websearch", "resource": "*", "effect": "allow" },
     { "action": "external_directory", "resource": "*", "effect": "allow" },
 
     // Explicitly record the important denials.
+    { "action": "websearch", "resource": "*", "effect": "deny" },
     { "action": "webfetch", "resource": "*", "effect": "deny" },
     { "action": "shell", "resource": "*", "effect": "deny" },
     { "action": "subagent", "resource": "*", "effect": "deny" },
@@ -95,9 +90,7 @@
 
     // Search MCPs: servers disabled; keep their allowlists for later.
     { "action": "brave_search_*", "resource": "*", "effect": "deny" },
-    { "action": "brave_search_brave_web_search", "resource": "*", "effect": "allow" },
-    { "action": "searxng_*", "resource": "*", "effect": "deny" },
-    { "action": "searxng_searxng_web_search", "resource": "*", "effect": "allow" }
+    { "action": "brave_search_brave_web_search", "resource": "*", "effect": "allow" }
   ],
 
   "mcp": {
@@ -190,19 +183,6 @@
           "startup": 20000,
           "catalog": 20000,
           "execution": 60000
-        }
-      },
-
-      "searxng": {
-        "type": "remote",
-        "url": "http://mcp_gateway:8080/servers/searxng/mcp",
-        "disabled": true,
-        "codemode": false,
-        "oauth": false,
-        "timeout": {
-          "startup": 30000,
-          "catalog": 30000,
-          "execution": 120000
         }
       }
     }
