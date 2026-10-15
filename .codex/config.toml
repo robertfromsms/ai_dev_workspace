@@ -66,6 +66,20 @@ default_tools_approval_mode = "auto"
 startup_timeout_sec = 20
 tool_timeout_sec = 60
 
+# Kindly searches the web 
+# currently configured to use Serply
+# implicitly disable get_content
+[mcp_servers.kindly]
+url = "http://mcp_gateway:8080/servers/kindly/mcp"
+enabled = false
+required = false
+enabled_tools = [
+    "web_search",
+]
+default_tools_approval_mode = "auto"
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+
 # Brave Search provides general internet search through a local stdio MCP
 # process. BRAVE_API_KEY is supplied to mcp_gateway service through docker secret
 # disabled by default due to needing api key

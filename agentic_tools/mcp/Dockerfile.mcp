@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG NODE_VERSION=22-bookworm-slim
+ARG NODE_VERSION=22-trixie-slim
 ARG JAVA_RUNTIME_VERSION=21.0.12_8-jdk-jammy
 ARG GO_VERSION=1.24.13-bookworm
 ARG MCP_LANGUAGE_SERVER_VERSION=v0.1.1
@@ -14,7 +14,9 @@ FROM eclipse-temurin:${JAVA_RUNTIME_VERSION} AS java_runtime
 FROM node:${NODE_VERSION}
 
 ARG MCP_PROXY_VERSION=0.12.0
-ARG MCP_PYTHON_SDK_VERSION=1.29.0
+ARG MCP_PROXY_PYTHON_SDK_VERSION=1.29.0
+ARG KINDLY_MCP_GITHUB_REF=main
+ARG KINDLY_MCP_PYTHON_SDK_VERSION=1.29.0
 ARG CONTEXT7_MCP_VERSION=4.0.2
 ARG BRAVE_SEARCH_MCP_VERSION=2.1.0
 ARG CODEGRAPH_VERSION=1.5.0
@@ -44,6 +46,9 @@ RUN apt-get update \
         ca-certificates \
         python3 \
         python3-venv \
+        chromium \
+        fonts-liberation \
+        git \
         ruby \
         ruby-dev \
     && gem install solargraph \
@@ -81,8 +86,14 @@ RUN npm install --global \
 # mcp-proxy
 RUN python3 -m venv /opt/mcp-python \
     && /opt/mcp-python/bin/pip install --no-cache-dir \
-        "mcp==${MCP_PYTHON_SDK_VERSION}" \
+        "mcp==${MCP_PROXY_PYTHON_SDK_VERSION}" \
         "mcp-proxy==${MCP_PROXY_VERSION}"
+
+# kindly, normal installation
+RUN python3 -m venv /opt/kindly-python \
+    && /opt/kindly-python/bin/pip install --no-cache-dir \
+        "mcp==${KINDLY_MCP_PYTHON_SDK_VERSION}" \
+        "git+https://github.com/Shelpuk-AI-Technology-Consulting/kindly-web-search-mcp-server.git@${KINDLY_MCP_GITHUB_REF}"
 
 # context7, brave-search, codegraph
 RUN npm install --global \
@@ -97,7 +108,9 @@ RUN install -d -o node -g node -m 0700 \
     /var/cache/solargraph
 
 # install more mcp here
-# after installing a mcp here, add corresponding mcp block in .codex/config.toml
+# after installing a mcp here, add corresponding mcp block 
+# in agentic runtime configuration, such as .codex/config.toml
+# and .opencode/opencode.jsonc
 
 ENV HOME=/home/node \
     JAVA_HOME=/opt/java/openjdk \

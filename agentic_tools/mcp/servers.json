@@ -123,6 +123,21 @@
         "TMPDIR": "/tmp",
         "XDG_CACHE_HOME": "/tmp/cache"
       }
+    },
+    "kindly": {
+      "enabled": true,
+      "command": "/usr/local/bin/secret_wrappers/kindly-secret-wrapper.sh",
+      "args": [
+        "start-mcp-server"
+      ],
+      "transportType": "stdio",
+      "env": {
+        "HOME": "/home/node",
+        "PATH": "/opt/kindly-python/bin:/usr/local/bin:/usr/bin:/bin",
+        "TMPDIR": "/tmp",
+        "XDG_CACHE_HOME": "/tmp/cache",
+        "KINDLY_BROWSER_EXECUTABLE_PATH": "/usr/bin/chromium"
+      }
     }
   }
 }

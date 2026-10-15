@@ -57,6 +57,10 @@
     { "action": "context7_resolve-library-id", "resource": "*", "effect": "allow" },
     { "action": "context7_query-docs", "resource": "*", "effect": "allow" },
 
+    // Kindly, for websearch, we implicitly deny get_content (fetch)
+    { "action": "kindly_*", "resource": "*", "effect": "deny" },
+    { "action": "kindly_web_search", "resource": "*", "effect": "allow" },
+
     // CodeGraph.
     { "action": "codegraph_*", "resource": "*", "effect": "deny" },
     { "action": "codegraph_codegraph_explore", "resource": "*", "effect": "allow" },
@@ -66,6 +70,13 @@
     { "action": "lsp_java_definition", "resource": "*", "effect": "allow" },
     { "action": "lsp_java_references", "resource": "*", "effect": "allow" },
     { "action": "lsp_java_diagnostics", "resource": "*", "effect": "allow" },
+
+    // Ruby LSP MCP.
+    { "action": "lsp_ruby_*", "resource": "*", "effect": "deny" },
+    { "action": "lsp_ruby_definition", "resource": "*", "effect": "allow" },
+    { "action": "lsp_ruby_references", "resource": "*", "effect": "allow" },
+    { "action": "lsp_ruby_diagnostics", "resource": "*", "effect": "allow" },
+    { "action": "lsp_ruby_hover", "resource": "*", "effect": "allow" },
 
     // Python LSP MCP: server disabled; keep these rules for later.
     { "action": "lsp_python_*", "resource": "*", "effect": "deny" },
@@ -81,13 +92,6 @@
     { "action": "lsp_typescript_diagnostics", "resource": "*", "effect": "allow" },
     { "action": "lsp_typescript_hover", "resource": "*", "effect": "allow" },
 
-    // Ruby LSP MCP.
-    { "action": "lsp_ruby_*", "resource": "*", "effect": "deny" },
-    { "action": "lsp_ruby_definition", "resource": "*", "effect": "allow" },
-    { "action": "lsp_ruby_references", "resource": "*", "effect": "allow" },
-    { "action": "lsp_ruby_diagnostics", "resource": "*", "effect": "allow" },
-    { "action": "lsp_ruby_hover", "resource": "*", "effect": "allow" },
-
     // Search MCPs: servers disabled; keep their allowlists for later.
     { "action": "brave_search_*", "resource": "*", "effect": "deny" },
     { "action": "brave_search_brave_web_search", "resource": "*", "effect": "allow" }
@@ -98,6 +102,19 @@
       "context7": {
         "type": "remote",
         "url": "http://mcp_gateway:8080/servers/context7/mcp",
+        "disabled": false,
+        "codemode": false,
+        "oauth": false,
+        "timeout": {
+          "startup": 20000,
+          "catalog": 20000,
+          "execution": 60000
+        }
+      },
+
+      "kindly": {
+        "type": "remote",
+        "url": "http://mcp_gateway:8080/servers/kindly/mcp",
         "disabled": false,
         "codemode": false,
         "oauth": false,
