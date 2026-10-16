@@ -97,6 +97,22 @@
     { "action": "brave_search_brave_web_search", "resource": "*", "effect": "allow" }
   ],
 
+  // hard deny with policies
+  "policies": [
+    // use kindly for websearch, no built in websearch and webfetch
+    { "action": "tool.use", "resource": "webfetch:*", "effect": "deny" },
+    { "action": "tool.use", "resource": "websearch:*", "effect": "deny" },
+
+    // we explicitly deny get_content, the agent should not be able to
+    // make get request on any random url with random parameters
+    { "action": "tool.use", "resource": "kindly_get_content:*", "effect": "deny" },
+
+    // this makes it so edit can only be used inside of the /workspace
+    { "action": "tool.use", "resource": "edit:/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:../*", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:*/../*", "effect": "deny" }
+  ],
+
   "mcp": {
     "servers": {
       "context7": {
