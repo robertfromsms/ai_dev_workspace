@@ -1,0 +1,11 @@
+.agents/
+.codegraph/
+.codex/
+.devcontainer/
+.opencode/
+.project-tmp/
+agentic_tools/
+# .dockerignore
+# .gitignore
+ai_dev_workspace.mk
+current_context.md
