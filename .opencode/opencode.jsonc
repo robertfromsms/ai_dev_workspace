@@ -37,14 +37,14 @@
     { "action": "skill", "resource": "*", "effect": "allow" },
     { "action": "question", "resource": "*", "effect": "allow" },
     { "action": "external_directory", "resource": "*", "effect": "allow" },
+    { "action": "shell", "resource": "*", "effect": "allow" },
+    { "action": "subagent", "resource": "*", "effect": "allow" },
 
     // Explicitly record the important denials.
     { "action": "websearch", "resource": "*", "effect": "deny" },
     { "action": "webfetch", "resource": "*", "effect": "deny" },
-    { "action": "shell", "resource": "*", "effect": "deny" },
-    { "action": "subagent", "resource": "*", "effect": "deny" },
-    { "action": "execute", "resource": "*", "effect": "deny" },
     { "action": "browser", "resource": "*", "effect": "deny" },
+    { "action": "execute", "resource": "*", "effect": "deny" },
 
     // specific settings for edit
     { "action": "edit", "resource": "*", "effect": "allow" },
@@ -103,14 +103,19 @@
     { "action": "tool.use", "resource": "webfetch:*", "effect": "deny" },
     { "action": "tool.use", "resource": "websearch:*", "effect": "deny" },
 
-    // we explicitly deny get_content, the agent should not be able to
-    // make get request on any random url with random parameters
-    { "action": "tool.use", "resource": "kindly_get_content:*", "effect": "deny" },
-
     // this makes it so edit can only be used inside of the /workspace
     { "action": "tool.use", "resource": "edit:/*", "effect": "deny" },
     { "action": "tool.use", "resource": "edit:../*", "effect": "deny" },
-    { "action": "tool.use", "resource": "edit:*/../*", "effect": "deny" }
+    { "action": "tool.use", "resource": "edit:*/../*", "effect": "deny" },
+
+    // hard deny execute/code mode, can't allow it for now
+    // can revisit in the future when we can block session, worktree and fetch
+    // too many unknowns about whether they will be a problem or not.
+    { "action": "tool.use", "resource": "execute:*", "effect": "deny" },
+
+    // we explicitly deny get_content, the agent should not be able to
+    // make get request on any random url with random parameters
+    { "action": "tool.use", "resource": "kindly_get_content:*", "effect": "deny" }
   ],
 
   "mcp": {

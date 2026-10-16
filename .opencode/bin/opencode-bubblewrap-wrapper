@@ -45,6 +45,9 @@ esac
 # Writable temp location for agent-controlled commands.
 mkdir -p "$PROJECT_TMP"
 
+# opencode bwrap logging
+# printf '[opencode-bwrap] launching bwrap from %s\n' "$CURRENT_DIR" >&2
+
 exec "$BWRAP" \
     --die-with-parent \
     \
