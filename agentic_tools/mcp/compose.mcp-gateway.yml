@@ -26,15 +26,21 @@ services:
       - ./servers.json:/etc/mcp-proxy/servers.json:ro
       # don't really need to mount the secret_wrappers, but just neatness' sake
       - ./secret_wrappers:/usr/local/bin/secret_wrappers:ro
-      # mounting the entire workspace into mcp_gateway service for codegraph, lsp and other stuff
+      # mounting the entire workspace into mcp_gateway (might not need to mount ai_dev_workspace for this service?)
       - type: bind
         source: ../../.
         target: /workspace
         read_only: true
+      # mounting your working project into mcp_gateway service for codegraph, lsp and other stuff
+      - type: bind
+        source: ${WORKING_PROJECT_PATH:?Set WORKING_PROJECT_PATH to the absolute host path of your project}
+        target: /workspace/working_project
+        bind:
+          create_host_path: false
       # using a named volume for codegraph
       - type: volume
         source: codegraph_index
-        target: /workspace/.codegraph
+        target: /workspace/working_project/.codegraph
       # persistent generated documentation cache for Solargraph
       - type: volume
         source: solargraph_cache

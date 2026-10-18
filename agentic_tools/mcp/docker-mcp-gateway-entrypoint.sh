@@ -5,7 +5,7 @@ echo "mcp_gateway service started!"
 
 # this is for checking and initializing codegraph indexing the project the first time
 # dont worry about sync, that just happens.
-codegraph_project="/workspace"
+codegraph_project="/workspace/working_project"
 codegraph_dir="${codegraph_project}/.codegraph"
 codegraph_db="${codegraph_dir}/codegraph.db"
 

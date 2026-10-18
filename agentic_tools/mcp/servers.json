@@ -39,7 +39,7 @@
         "serve",
         "--mcp",
         "--path",
-        "/workspace"
+        "/workspace/working_project"
       ],
       "env": {
         "DO_NOT_TRACK": "1",
@@ -54,7 +54,7 @@
       "command": "/usr/local/bin/mcp-language-server",
       "args": [
         "--workspace",
-        "/workspace",
+        "/workspace/working_project",
         "--lsp",
         "/usr/local/bin/jdtls",
         "--",
@@ -74,7 +74,7 @@
       "command": "/usr/local/bin/mcp-language-server",
       "args": [
         "--workspace",
-        "/workspace",
+        "/workspace/working_project",
         "--lsp",
         "/usr/local/bin/pyright-langserver",
         "--",
@@ -92,7 +92,7 @@
       "command": "/usr/local/bin/mcp-language-server",
       "args": [
         "--workspace",
-        "/workspace",
+        "/workspace/working_project",
         "--lsp",
         "/usr/local/bin/typescript-language-server",
         "--",
@@ -110,7 +110,7 @@
       "command": "/usr/local/bin/mcp-language-server",
       "args": [
         "--workspace",
-        "/workspace",
+        "/workspace/working_project",
         "--lsp",
         "/usr/local/bin/solargraph",
         "--",
