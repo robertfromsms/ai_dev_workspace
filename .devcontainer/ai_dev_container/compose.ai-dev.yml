@@ -21,6 +21,12 @@ services:
         source: ../../.
         target: /workspace
         read_only: false
+      - type: bind
+        source: ${WORKING_PROJECT_PATH:?Set WORKING_PROJECT_PATH to the absolute host path of your project}
+        target: /workspace/working_project
+        read_only: false
+        bind:
+          create_host_path: false
 
       - type: volume
         source: ai_dev_user_home

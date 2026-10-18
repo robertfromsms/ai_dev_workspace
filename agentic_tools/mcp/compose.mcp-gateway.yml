@@ -35,12 +35,14 @@ services:
       - type: bind
         source: ${WORKING_PROJECT_PATH:?Set WORKING_PROJECT_PATH to the absolute host path of your project}
         target: /workspace/working_project
+        read_only: false
         bind:
           create_host_path: false
       # using a named volume for codegraph
       - type: volume
         source: codegraph_index
         target: /workspace/working_project/.codegraph
+        read_only: false
       # persistent generated documentation cache for Solargraph
       - type: volume
         source: solargraph_cache
