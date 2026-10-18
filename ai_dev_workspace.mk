@@ -8,6 +8,10 @@ ai-dev-validate:
 ai-dev-up: ai-dev-validate
 	docker compose -f $(AI_DEV_COMPOSE) up -d
 
+.PHONY: ai-dev-down
+ai-dev-down:
+	docker compose -f $(AI_DEV_COMPOSE) down
+
 .PHONY: agent-shell
 agent-shell:
 	docker compose -f $(AI_DEV_COMPOSE) exec ai_dev_agent bash
