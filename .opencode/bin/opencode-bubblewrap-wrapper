@@ -48,6 +48,10 @@ mkdir -p "$PROJECT_TMP"
 # opencode bwrap logging
 # printf '[opencode-bwrap] launching bwrap from %s\n' "$CURRENT_DIR" >&2
 
+# issue with --proc /proc \, having a fresh /proc for bubblewrap
+# prefer --proc /proc \ over --ro-bind /proc /proc, because that
+# exposes the agent container info to inside the bubblewrap
+# maybe we can change this back in the future
 exec "$BWRAP" \
     --die-with-parent \
     \
@@ -65,7 +69,7 @@ exec "$BWRAP" \
     --ro-bind-try "$WORKSPACE/.opencode" "$WORKSPACE/.opencode" \
     --ro-bind-try "$WORKSPACE/current_context.md" "$WORKSPACE/current_context.md" \
     \
-    --proc /proc \
+    --ro-bind /proc /proc \
     --dev /dev \
     \
     --setenv TMPDIR "$PROJECT_TMP" \
