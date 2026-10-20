@@ -104,7 +104,7 @@ RUN npm install --global \
 
 # Seed empty named volumes with ownership matching the unprivileged gateway user.
 RUN install -d -o node -g node -m 0700 \
-    /workspace/.codegraph \
+    /workspace/working_project/.codegraph \
     /var/cache/solargraph
 
 # install more mcp here

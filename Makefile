@@ -6,7 +6,7 @@ ai-dev-validate:
 
 .PHONY: ai-dev-up
 ai-dev-up: ai-dev-validate
-	docker compose -f $(AI_DEV_COMPOSE) up -d
+	docker compose -f $(AI_DEV_COMPOSE) up -d --build
 
 .PHONY: ai-dev-down
 ai-dev-down:
