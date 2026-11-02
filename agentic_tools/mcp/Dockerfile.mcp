@@ -13,20 +13,20 @@ RUN GOTOOLCHAIN=local CGO_ENABLED=0 go install -trimpath -ldflags="-s -w" \
 FROM eclipse-temurin:${JAVA_RUNTIME_VERSION} AS java_runtime
 FROM node:${NODE_VERSION}
 
-ARG MCP_PROXY_VERSION=0.12.0
+ARG MCP_PROXY_VERSION=0.13.0
 ARG MCP_PROXY_PYTHON_SDK_VERSION=1.29.0
 ARG KINDLY_MCP_GITHUB_REF=72a3e059bbddc42436efa1575e0895a30a62c351
 ARG KINDLY_MCP_PYTHON_SDK_VERSION=1.29.0
-ARG CONTEXT7_MCP_VERSION=4.0.2
+ARG CONTEXT7_MCP_VERSION=4.4.4
 ARG BRAVE_SEARCH_MCP_VERSION=2.1.0
-ARG CODEGRAPH_VERSION=1.5.0
+ARG CODEGRAPH_VERSION=1.6.2
 
 # related to Language servers
-ARG PYRIGHT_VERSION=1.1.413
-ARG TYPESCRIPT_LANGUAGE_SERVER_VERSION=6.0.0
+ARG PYRIGHT_VERSION=1.1.414
+ARG TYPESCRIPT_LANGUAGE_SERVER_VERSION=6.0.2
 # typescript-language-server 6.x currently documents TypeScript 6 as its peer.
 ARG TYPESCRIPT_VERSION=6.0.3
-ARG SOLARGRAPH_VERSION=0.60.2
+ARG SOLARGRAPH_VERSION=0.62.0
 ARG JDTLS_VERSION=1.60.0
 ARG JDTLS_BUILD=202606262232
 
@@ -40,6 +40,7 @@ COPY --from=java_runtime /opt/java/openjdk /opt/java/openjdk
 COPY --from=mcp_language_server_builder --chmod=0755 \
     /go/bin/mcp-language-server /usr/local/bin/mcp-language-server
 
+# currently solargraph/ruby lsp mcp references tool is not working... idk, figure out later
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
@@ -74,6 +75,7 @@ RUN mkdir -p /opt/jdtls \
 
 # Python and JavaScript/TypeScript language servers. One TypeScript language
 # server handles both JavaScript and TypeScript projects.
+# yikes, pyright/python lsp mcp not working right now, fix later
 RUN npm install --global \
         "pyright@${PYRIGHT_VERSION}" \
         "typescript@${TYPESCRIPT_VERSION}" \
