@@ -5,3 +5,7 @@
 agentic_tools/mcp/.env
 working_project/*
 !working_project/.keep
+.idea/*
+!.idea/.keep
+tmpcmp/*
+!tmpcmp/.keep
